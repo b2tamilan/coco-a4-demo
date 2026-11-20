@@ -1,0 +1,1691 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SAMPLE COCO TRADERS - A4 Billing & ERP Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAF7F2;--sf:#fff;--bd:#E6E0D6;--pr:#1B4332;--pr2:#2D6A4F;--ac:#D97706;--rd:#DC2626;--gn:#059669;--am:#F59E0B;--tx:#1c1917;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme=light]){--bg:#14110d;--sf:#1f1b16;--bd:#3a332a;--pr:#74c69d;--pr2:#52b788;--tx:#f1ebe0}
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px 'Inter','Noto Sans Tamil',sans-serif;font-variant-numeric:tabular-nums}
+
+/* Demo top ribbon */
+#demoBar{
+  background:linear-gradient(90deg,#78350F,#B45309);color:#FEF3C7;
+  padding:6px 12px;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:7
+}
+#demoBar b{color:#fff}
+#demoBar .dbtn{background:#FEF3C7;color:#78350F;border:0;border-radius:6px;padding:4px 10px;font:600 12px inherit;cursor:pointer}
+
+header{
+  position:sticky;top:var(--dbh,36px);z-index:5;background:#1B4332;color:#fff;
+  display:flex;justify-content:space-between;align-items:center;padding:8px 12px;gap:8px;flex-wrap:wrap
+}
+header b{font-size:16px;display:flex;align-items:center;gap:6px}
+header div{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+header button{background:#2D6A4F;color:#fff;border:0;border-radius:8px;min-height:38px;padding:0 10px;font:inherit;cursor:pointer}
+.bd{background:#DC2626;border-radius:10px;padding:0 6px;font-size:12px;margin-left:2px}
+.bico{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;vertical-align:middle}
+.bico svg{width:100%;height:100%;display:block}
+
+.app{display:grid;grid-template-columns:210px 1fr;min-height:88vh}
+nav{background:var(--sf);border-right:1px solid var(--bd);display:flex;flex-direction:column}
+nav button{min-height:48px;border:0;background:none;text-align:left;padding:0 12px;font:inherit;color:var(--tx);border-left:4px solid transparent;cursor:pointer}
+nav button.on{background:var(--bg);border-color:var(--ac);font-weight:600;color:var(--pr)}
+main{padding:12px;max-width:1020px;width:100%;min-width:0}
+
+@media(max-width:700px){
+  .app{display:block}
+  nav{position:fixed;bottom:0;left:0;right:0;flex-direction:row;z-index:6;border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);overflow-x:auto}
+  nav button{min-width:82px;font-size:11px;text-align:center;padding:4px 2px;border-left:0;border-top:3px solid transparent}
+  nav button.on{border-top-color:var(--ac)}
+  main{padding-bottom:90px}
+}
+
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:0 0 12px;overflow-x:auto}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.k{font-size:12px;opacity:.78}
+.v{font-size:21px;font-weight:700;color:var(--pr)}
+label{display:block;font-size:12px;opacity:.92}
+input,select,textarea{width:100%;min-height:44px;border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font:inherit;background:var(--sf);color:var(--tx);margin-top:2px}
+input[type=radio],input[type=checkbox]{width:auto;min-height:0;margin:0 6px 0 0}
+.btn{min-height:44px;border:0;border-radius:8px;background:var(--pr2);color:#fff;padding:0 14px;font:inherit;font-weight:600;cursor:pointer;margin:4px 4px 4px 0}
+.btn.o{background:var(--ac)}.btn.x{background:#78716c}.btn.s{min-height:34px;padding:0 10px;font-size:13px}.btn.r{background:var(--rd)}
+.sub{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px}
+.sub button{min-height:38px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:20px;padding:0 14px;font:inherit;white-space:nowrap;cursor:pointer}
+.sub .on{background:var(--pr2);color:#fff;border-color:var(--pr2)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+td,th{border-bottom:1px solid var(--bd);padding:6px;text-align:left;white-space:nowrap}
+.red{color:var(--rd)}.grn{color:var(--gn)}.amb{color:var(--am)}.hid{display:none!important}
+.warn{background:#fef3c7;color:#92400e;padding:8px 10px;border-radius:8px;margin:6px 0;font-size:13px}
+.info{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;padding:10px 12px;border-radius:10px;margin:0 0 12px;font-size:13px}
+h3{margin:4px 0 10px;color:var(--pr)}
+
+/* Expiry / Limit Fullscreen Modal */
+#expScreen{position:fixed;inset:0;z-index:120;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px}
+.badge-demo{display:inline-block;background:#fef3c7;color:#92400e;border:1px solid #f59e0b;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:700;vertical-align:middle}
+
+/* ---- A4 Tax Invoice Preview (#bmA4) ---- */
+.a4wrap{overflow-x:auto;padding:4px 0}
+#bmA4{
+  position:relative;background:#fff;color:#111;border:1.5px solid #222;
+  width:794px;min-height:1050px;margin:6px auto;padding:24px 28px;
+  font:12.5px/1.45 'Inter','Noto Sans Tamil',sans-serif;font-variant-numeric:tabular-nums;
+  overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.15)
+}
+#bmA4 *{color:#111}
+#bmA4 .wm{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  display:flex;flex-direction:column;justify-content:space-around;align-items:center;
+  overflow:hidden
+}
+#bmA4 .wm span{
+  transform:rotate(-32deg);font-size:34px;font-weight:800;letter-spacing:3px;
+  color:rgba(220,38,38,0.11);white-space:nowrap;user-select:none
+}
+#bmA4 .a4c{position:relative;z-index:2}
+#bmA4 .a4title{text-align:center;font-size:17px;font-weight:700;letter-spacing:1px;border-bottom:2px solid #1B4332;padding-bottom:6px;margin-bottom:10px;color:#1B4332}
+#bmA4 .a4hdr{display:flex;justify-content:space-between;gap:14px;border:1px solid #333;padding:10px 12px;margin-bottom:10px}
+#bmA4 .a4co h2{margin:0 0 3px;font-size:19px;color:#1B4332;display:flex;align-items:center;gap:8px}
+#bmA4 .a4co p,#bmA4 .a4meta p{margin:2px 0;font-size:12px}
+#bmA4 .a4meta{text-align:right;min-width:210px}
+#bmA4 .a4party{display:grid;grid-template-columns:1.25fr 1fr;gap:10px;border:1px solid #333;padding:9px 12px;margin-bottom:10px;background:#fafaf9}
+#bmA4 .a4party b.lb{display:block;font-size:11px;text-transform:uppercase;color:#1B4332;margin-bottom:3px;letter-spacing:.5px}
+#bmA4 .a4tbl{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px}
+#bmA4 .a4tbl th,#bmA4 .a4tbl td{border:1px solid #333;padding:6px 7px;white-space:normal}
+#bmA4 .a4tbl th{background:#1B4332;color:#fff!important;font-weight:600;text-align:center}
+#bmA4 .a4tbl td.num,#bmA4 .a4tbl th.num{text-align:right}
+#bmA4 .a4tbl td.ctr{text-align:center}
+#bmA4 .a4tbl tr.totrow td{font-weight:700;background:#f3f4f6}
+#bmA4 .a4bot{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:8px}
+#bmA4 .a4box{border:1px solid #333;padding:9px 11px;font-size:12px}
+#bmA4 .a4box h4{margin:0 0 5px;font-size:12px;color:#1B4332;border-bottom:1px solid #ccc;padding-bottom:3px}
+#bmA4 .a4sum{width:100%;border-collapse:collapse;font-size:12.5px}
+#bmA4 .a4sum td{border:1px solid #333;padding:5px 8px}
+#bmA4 .a4sum td:last-child{text-align:right;font-weight:700}
+#bmA4 .a4sum tr.hi td{background:#ecfdf5;font-size:13.5px;font-weight:700}
+#bmA4 .a4sign{display:flex;justify-content:space-between;align-items:flex-end;margin-top:14px;border:1px solid #333;padding:10px 12px;min-height:92px}
+#bmA4 .a4sign .sigbox{text-align:right}
+#bmA4 .a4foot{margin-top:10px;text-align:center;font-size:11px;color:#555;border-top:1px dashed #999;padding-top:5px}
+
+/* ---- Thermal receipt preview (#bmReceipt) ---- */
+#bmReceipt{background:#fff;color:#000;border:1px solid #000;margin:8px auto;padding:2.5mm;font:12px/1.45 'Noto Sans Tamil','Inter',sans-serif;font-variant-numeric:tabular-nums;position:relative;overflow:hidden}
+#bmReceipt.w58{width:58mm}#bmReceipt.w80{width:80mm}
+#bmReceipt .rh{white-space:pre-line;text-align:center;font-weight:700;font-size:15px;padding-bottom:4px;margin-bottom:5px;border-bottom:3px double #000}
+#bmReceipt .rh small{display:block;font-size:10.5px;font-weight:400;margin-top:1px}
+#bmReceipt .tr{display:flex;justify-content:space-between;gap:6px;padding:1px 0}
+#bmReceipt .tv{margin-left:auto;text-align:right;font-weight:700}
+#bmReceipt .tr.tk{border-top:1px dashed #000;border-bottom:1px dashed #000;font-size:14px;font-weight:700;padding:3px 0;margin:3px 0}
+#bmReceipt .td{border-top:1px dashed #000;margin:4px 0}
+#bmReceipt .ts{font-weight:700;margin-top:2px}
+#bmReceipt .rf{font-size:10.5px;text-align:center;border-top:1px solid #000;margin-top:6px;padding-top:4px}
+#bmReceipt .twm{text-align:center;font-size:10px;font-weight:700;color:#b91c1c;border:1px dashed #b91c1c;padding:2px;margin:4px 0}
+
+.bmtool{display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.bmact{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}.bmact .btn{flex:1 1 30%;margin:2px}
+
+/* ---- Print styles ---- */
+@media print{
+  @page{size:A4 portrait;margin:8mm}
+  #demoBar,header,nav,.btn,button,.sub,#stbar,.warn,.info{display:none!important}
+  body{background:#fff!important;color:#000!important;margin:0!important}
+  body:has(#bm)>*:not(#bm){display:none!important}
+  #bm{position:static!important;inset:auto!important;background:none!important;padding:0!important;display:block!important;overflow:visible!important}
+  #bm>.card{border:0!important;box-shadow:none!important;border-radius:0!important;background:none!important;padding:0!important;margin:0!important;max-width:none!important;max-height:none!important;overflow:visible!important}
+  #bm h3,#bm .bmtool,#bm .bmact,#bm #bmMsg,#bm #bmImg{display:none!important}
+  #bm[data-mode="a4"] #bmReceipt{display:none!important}
+  #bm[data-mode="a4"] .a4wrap{overflow:visible!important;padding:0!important}
+  #bm[data-mode="a4"] #bmA4{width:100%!important;min-height:auto!important;margin:0!important;box-shadow:none!important;border:1.5px solid #000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #bm[data-mode="t58"] #bmA4,#bm[data-mode="t80"] #bmA4{display:none!important}
+  #bm[data-mode="t58"] #bmReceipt{width:54mm!important;border:0!important;margin:0 auto!important;padding:0!important}
+  #bm[data-mode="t80"] #bmReceipt{width:74mm!important;border:0!important;margin:0 auto!important;padding:0!important}
+  body:not(:has(#bm)) .app{display:block!important}
+  body:not(:has(#bm)) main{max-width:none!important;padding:0!important}
+  body:not(:has(#bm)) .card{border:0!important;box-shadow:none!important;padding:0!important;overflow:visible!important}
+  body:not(:has(#bm)) th,body:not(:has(#bm)) td{border:1px solid #000!important;padding:4px 6px!important;white-space:normal!important;color:#000!important}
+}
+</style>
+</head>
+<body>
+<div id="demoBar">
+  <div>🧪 <b>RESTRICTED DEMO</b> · <span id="demoStat">0 / 5 பதிவுகள்</span> · காலாவதி: <b id="demoExpLbl"></b></div>
+  <div style="display:flex;gap:6px;align-items:center">
+    <a href="tel:+919962997694" style="color:#FEF3C7;text-decoration:none;font-size:12.5px">📞 <b>99629 97694</b></a>
+    <button class="dbtn" onclick="openSampleA4()">📄 மாதிரி A4 பில்</button>
+    <button class="dbtn" onclick="resetDemo()">🔄 Reset Demo</button>
+  </div>
+</div>
+
+<header>
+  <b><span class="bico" id="hdrLogo"></span> <span id="hdrName">SAMPLE COCO TRADERS</span> <span class="badge-demo">A4 DEMO</span></b>
+  <div>
+    <button onclick="setLang()">தமிழ் | ENG</button>
+    <button onclick="go('d')">🔔<span class="bd" id="bell">0</span></button>
+    <button onclick="demoLockedFeature('Cloud Sync & Backup')">☁️ Cloud Sync 🔒</button>
+  </div>
+</header>
+
+<div class="app">
+  <nav id="nav"></nav>
+  <main id="m"></main>
+</div>
+
+<script>
+/* ============================================================================
+   RESTRICTED DEMO CONFIGURATION — EDIT ONLY THESE LINES IF NEEDED
+   ============================================================================ */
+const DEMO_CFG = {
+  // 7-day expiry from 20-Nov-2026 => 27-Nov-2026 (inclusive)
+  expiryDate: '2026-11-27',
+  maxNewEntries: 5,
+  watermarkText: 'DEMO SAMPLE — NOT FOR OFFICIAL BILLING',
+
+  // Developer contact shown on Demo Expiry / Limit & Bill Footer
+  devName: 'Bharath',
+  devTitle: 'Custom Billing, ERP, Website & Automation',
+  devPhone: '919962997694',
+  devPhoneShow: '99629 97694',
+
+  // Sample Business Profile (Dummy Demo Branding)
+  company: {
+    name: 'SAMPLE COCO TRADERS',
+    place: 'Pudukkottai',
+    address: 'No. 10, Market Main Road, Pudukkottai - 622001, Tamil Nadu',
+    phone: '98765 43210',
+    email: 'demo@samplecocotraders.in',
+    gstin: '33DEMO0000A1Z5',
+    state: '33-Tamil Nadu',
+    bankName: 'State Bank of India, Pudukkottai Town',
+    accNo: '00001234567890',
+    ifsc: 'SBIN0001234',
+    accHolder: 'SAMPLE COCO TRADERS',
+    upiId: 'samplecoco@sbi',
+    defaultHsn: '08011210'
+  }
+};
+
+/* Isolated Demo Storage Keys — Completely separate from any live client data */
+const K = 'demo_a4_coco_v1';
+const K_LANG = 'demo_a4_coco_lang_v1';
+const K_MAXDT = 'demo_a4_coco_maxdt_v1';
+
+/* Clean SVG Brand Icon (Coconut Bunch) */
+const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#1B4332"/><path d="M32 10c4 5 7 9 7 14" stroke="#95D5B2" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M32 10c-4 5-7 9-7 14" stroke="#95D5B2" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="24" cy="36" r="11" fill="#D97706" stroke="#FEF3C7" stroke-width="2"/><circle cx="40" cy="36" r="11" fill="#B45309" stroke="#FEF3C7" stroke-width="2"/><circle cx="32" cy="43" r="11" fill="#92400E" stroke="#FEF3C7" stroke-width="2"/><circle cx="32" cy="41" r="2.2" fill="#FEF3C7"/></svg>`;
+document.getElementById('hdrLogo').innerHTML = LOGO_SVG;
+document.getElementById('hdrName').textContent = DEMO_CFG.company.name;
+
+/* ---- Utility helpers ---- */
+const $ = i => document.getElementById(i);
+const n = i => parseFloat($(i) ? $(i).value : 0) || 0;
+const M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fd = s => { if(!s) return ''; const d = new Date(s+'T00:00:00'); if(isNaN(d)) return s; return String(d.getDate()).padStart(2,'0')+'-'+M[d.getMonth()]+'-'+d.getFullYear(); };
+const td = () => { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const dd = (a,b) => Math.round((new Date(a)-new Date(b))/864e5);
+const uid = () => 'D'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const R = x => '₹' + Math.round(x).toLocaleString('en-IN');
+const R2 = x => '₹' + Number(x||0).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+const E = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* Indian Currency Amount in Words (with Paise) */
+function amountInWords(num){
+  num = Math.max(0, Number(num) || 0);
+  const rupees = Math.floor(num);
+  const paise = Math.round((num - rupees) * 100);
+  const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  const two = x => x < 20 ? ones[x] : tens[Math.floor(x/10)] + (x%10 ? ' ' + ones[x%10] : '');
+  const three = x => (x >= 100 ? ones[Math.floor(x/100)] + ' Hundred' + (x%100 ? ' and ' : '') : '') + two(x%100);
+  function conv(x){
+    if(x === 0) return 'Zero';
+    let parts = [];
+    const cr = Math.floor(x / 10000000); x %= 10000000;
+    const lk = Math.floor(x / 100000);   x %= 100000;
+    const th = Math.floor(x / 1000);     x %= 1000;
+    if(cr) parts.push(conv(cr) + ' Crore');
+    if(lk) parts.push(two(lk) + ' Lakh');
+    if(th) parts.push(two(th) + ' Thousand');
+    if(x) parts.push(three(x));
+    return parts.join(' ');
+  }
+  let res = conv(rupees) + ' Rupees';
+  if(paise > 0) res += ' and ' + two(paise) + ' Paise';
+  return res + ' Only';
+}
+
+/* ---- Seed Data (Preloaded so Client can test A4 Invoice immediately) ---- */
+function makeSeedState(){
+  const today = td();
+  const s = {
+    _demoUsed: 0,
+    _invSeq: 46,
+    f: [
+      { id:'F_DEMO_1', name:'திரு. முருகன் (விவசாயி)', v:'ஆலங்குடி', ph:'9876500001', gstin:'', addr:'ஆலங்குடி, புதுக்கோட்டை', state:'33-Tamil Nadu', cycle:55, last:today, bal:0, rate:2, since:'', _seed:1 },
+      { id:'F_DEMO_2', name:'ஸ்ரீ கணபதி கோகோ மண்டி (Weight Supplier)', np:1, v:'கீரமங்கலம்', ph:'9876500002', gstin:'33DEMO1111B1Z2', addr:'Main Road, Keeramangalam, Pudukkottai', state:'33-Tamil Nadu', cycle:30, last:today, bal:0, rate:0, since:'', _seed:1 }
+    ],
+    b: [
+      { id:'B_DEMO_1', name:'ஸ்ரீ லட்சுமி டிரேடர்ஸ் (Sample Buyer)', np:1, v:'கீரமங்கலம்', ph:'9876500011', gstin:'33DEMO2222C1Z9', addr:'No. 1/215, Amman Kovil Street, Keeramangalam', state:'33-Tamil Nadu', bal:0, ls:today, _seed:1 },
+      { id:'B_DEMO_2', name:'அருண் கோகோ ஏஜென்சி', np:1, v:'மதுரை', ph:'9876500012', gstin:'33DEMO3333D1Z4', addr:'No. 45, Bypass Road, Madurai', state:'33-Tamil Nadu', bal:0, ls:'', _seed:1 }
+    ],
+    fe: [
+      { id:'FE_SEED_1', _seed:1, k:'P', pmode:'count', invNo:'PB-001', fid:'F_DEMO_1', date:today, g:5000, ded:400, pp:8, bill:4600, rate:22, amt:101200, cut:0, gram:500, net:101200, int:0, pr:0, fin:101200, paid:101200, mode:'Cash', note:'மாதிரி எண்ணிக்கை கொள்முதல்', d:0 },
+      { id:'FE_SEED_2', _seed:1, k:'P', pmode:'weight', invNo:'PB-002', fid:'F_DEMO_2', date:today, grade:'husked_pachai_kudumi', hsn:'08011210', g:18000, gk:9500, dp:3, dk:285, nk:9215, rate:42.5, amt:391637.5, cut:0, gram:528, net:391637.5, int:0, pr:0, fin:391637.5, paid:300000, mode:'Bank', note:'மாதிரி எடை கொள்முதல் (3% கழிவு)', d:91637.5 }
+    ],
+    be: [
+      {
+        id:'BE_SEED_1', _seed:1, k:'S', invNo:'45', bid:'B_DEMO_1', date:today, pos:'33-Tamil Nadu', veh:'TN 55 AB 1234',
+        rows:[
+          { g:'husked_pachai_kudumi', itemName:'COCONUT FRESH (பச்சை குடுமிக்காய்)', hsn:'08011210', pcs:20000, gk:11070, dp:3, dk:332.1, nk:10737.9, rate:46.50, tot:499312.35 }
+        ],
+        total:499312.35, recv:0, mode:'Bank', note:'மாதிரி A4 விற்பனை பில் (3% எடைக் கழிவுடன்)', d:499312.35
+      }
+    ],
+    dh: [ { id:'DH_SEED_1', _seed:1, date:today, p:4000, lab:3200, oth:400, cost:3600, note:'மாதிரி உரியல் பதிவு' } ],
+    ad: [], hk: [], lb: [], ex: []
+  };
+  return s;
+}
+
+let S;
+try { S = JSON.parse(localStorage.getItem(K)); } catch(e){}
+if(!S || !Array.isArray(S.f)) S = makeSeedState();
+if(typeof S._demoUsed !== 'number') S._demoUsed = 0;
+if(typeof S._invSeq !== 'number') S._invSeq = 46;
+
+function saveLocal(){
+  try{ localStorage.setItem(K, JSON.stringify(S)); }
+  catch(e){ alert('Storage நிறைந்துவிட்டது.'); }
+}
+function save(){ saveLocal(); updateDemoBar(); }
+
+/* ---- Demo Restrictions: 7-Day Expiry + 5 New Entries Limit ---- */
+function isExpired(){
+  const today = td();
+  let maxDt = '';
+  try{ maxDt = localStorage.getItem(K_MAXDT) || ''; }catch(e){}
+  if(today > maxDt){ try{ localStorage.setItem(K_MAXDT, today); }catch(e){} maxDt = today; }
+  return today > DEMO_CFG.expiryDate || maxDt > DEMO_CFG.expiryDate;
+}
+
+function daysLeft(){
+  const d = dd(DEMO_CFG.expiryDate, td());
+  return Math.max(0, d);
+}
+
+function updateDemoBar(){
+  const left = Math.max(0, DEMO_CFG.maxNewEntries - S._demoUsed);
+  const el = $('demoStat');
+  if(el) el.textContent = `${S._demoUsed} / ${DEMO_CFG.maxNewEntries} புதிய பதிவுகள் (மீதம்: ${left})`;
+  const ex = $('demoExpLbl');
+  if(ex) ex.textContent = `${fd(DEMO_CFG.expiryDate)} (${daysLeft()} நாட்கள்)`;
+}
+
+function contactCTA(){
+  const ph = DEMO_CFG.devPhone ? DEMO_CFG.devPhone.replace(/\D/g,'') : '';
+  const msg = encodeURIComponent('வணக்கம் பாரத் சார், A4 Billing & ERP Demo-வை பார்த்தேன். முழுப் பதிப்பு குறித்துப் பேச வேண்டும்.');
+  return ph
+    ? `<div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+         <a href="https://wa.me/${ph}?text=${msg}" target="_blank" style="text-decoration:none"><button class="btn o">📲 WhatsApp-இல் தொடர்பு கொள்க</button></a>
+         <a href="tel:+${ph}" style="text-decoration:none"><button class="btn">📞 Call ${DEMO_CFG.devName}</button></a>
+       </div>`
+    : `<div class="warn" style="margin-top:12px"><b>முழுப் பதிப்பிற்கு:</b> ${DEMO_CFG.devName} (${DEMO_CFG.devTitle}) அவர்களை <b>${DEMO_CFG.devPhoneShow}</b> எண்ணில் தொடர்பு கொள்ளவும்.</div>`;
+}
+
+function showExpiryLock(){
+  const d = document.createElement('div');
+  d.id = 'expScreen';
+  d.innerHTML = `<div class="card" style="max-width:440px;width:100%;text-align:center;padding:24px">
+    <div style="font-size:42px;margin-bottom:6px">⏳</div>
+    <h2 style="margin:0;color:var(--rd)">Demo சோதனைக் காலம் முடிந்துவிட்டது</h2>
+    <p style="font-size:14px;line-height:1.6">இந்த Restricted Demo பதிப்பு <b>${fd(DEMO_CFG.expiryDate)}</b> அன்றுடன் காலாவதியாகிவிட்டது.</p>
+    <p class="k">உங்கள் நிறுவனப் பெயர், GSTIN, Bank விவரங்கள், Unlimited பதிவுகள் மற்றும் Cloud Sync வசதியுடன் முழுப் பதிப்பைப் பெற:</p>
+    ${contactCTA()}
+  </div>`;
+  document.body.innerHTML = '';
+  document.body.appendChild(d);
+}
+
+function checkDemoLimit(isEdit){
+  if(isExpired()){ showExpiryLock(); return false; }
+  if(isEdit) return true;
+  if(S._demoUsed >= DEMO_CFG.maxNewEntries){
+    showDemoPopup(
+      '🔒 Demo பதிவு வரம்பு முடிந்துவிட்டது (5 / 5)',
+      `இந்த சோதனைப் பதிப்பில் அதிகபட்சம் <b>${DEMO_CFG.maxNewEntries} புதிய பதிவுகள்</b> மட்டுமே சேமிக்க முடியும். இதுவரை உருவாக்கிய பில்களைப் பார்க்கவும், Print / PDF / WhatsApp சோதனை செய்யவும் முடியும். மீண்டும் சோதிக்க விரும்பினால் மேலே உள்ள <b>"Reset Demo"</b> பட்டனைப் பயன்படுத்தலாம்.`
+    );
+    return false;
+  }
+  return true;
+}
+
+function consumeDemoSlot(isEdit){
+  if(!isEdit) S._demoUsed = (S._demoUsed || 0) + 1;
+}
+
+function demoLockedFeature(name){
+  showDemoPopup(
+    `🔒 ${name} — முழுப் பதிப்பில் மட்டும்`,
+    `<b>${name}</b> வசதி பாதுகாப்புக் காரணங்களுக்காக இந்த Restricted Demo பதிப்பில் முடக்கப்பட்டுள்ளது. உங்கள் வியாபாரத்திற்கான முழுப் பதிப்பில் தனிப்பட்ட Cloud Sync, Auto Backup, மற்றும் பல சாதன இணைப்பு வழங்கப்படும்.`
+  );
+}
+
+function showDemoPopup(title, bodyHtml){
+  document.querySelectorAll('#dmp').forEach(x=>x.remove());
+  const m = document.createElement('div');
+  m.id = 'dmp';
+  m.style.cssText = 'position:fixed;inset:0;background:#000a;z-index:50;padding:16px;display:flex;align-items:center;justify-content:center';
+  m.innerHTML = `<div class="card" style="max-width:440px;width:100%;text-align:center;padding:20px">
+    <h3 style="margin-top:0;color:var(--ac)">${title}</h3>
+    <p style="font-size:13.5px;line-height:1.55">${bodyHtml}</p>
+    ${contactCTA()}
+    <div style="margin-top:12px"><button class="btn x" onclick="document.getElementById('dmp').remove()">மூடு</button></div>
+  </div>`;
+  document.body.appendChild(m);
+}
+
+function resetDemo(){
+  if(!confirm('Demo தரவுகள் அனைத்தும் ஆரம்ப மாதிரி நிலைக்கு மீட்டமைக்கப்படும். தொடரவா?')) return;
+  S = makeSeedState();
+  recAll();
+  save();
+  ed = null;
+  cur = 'd';
+  render();
+}
+
+/* ---- Core Business Data & Grades ---- */
+let lang = 'ta', cur = 'd', sb = {}, ed = null;
+try{ lang = localStorage.getItem(K_LANG) || 'ta'; }catch(e){}
+const t = (a,b) => lang=='ta' ? a : b;
+
+const GR = [
+  ['husked_pachai_kudumi','பச்சை குடுமிக்காய் (COCONUT FRESH)','H','08011210'],
+  ['husked_biscuit_kudumi','பிஸ்கட் குடுமிக்காய்','H','08011210'],
+  ['husked_kasangal_kudumi','கசங்கல் குடுமிக்காய்','H','08011210'],
+  ['husked_pachai_molai','பச்சை மோலை','H','08011210'],
+  ['husked_biscuit_molai','பிஸ்கட் மோலை','H','08011210'],
+  ['husked_kasangal_molai','கசங்கல் மோலை','H','08011210'],
+  ['unhusked_pachai','உரிக்காத காய் - பச்சை','U','08011210'],
+  ['unhusked_biscuit','உரிக்காத காய் - பிஸ்கட்','U','08011210'],
+  ['unhusked_kasangal','உரிக்காத காய் - கசங்கல்','U','08011210']
+];
+
+const TABS = [
+  ['d','முகப்பு','Dashboard'],
+  ['p','கொள்முதல்','Purchase'],
+  ['u','உரியல் & குடோன்','Dehusking & Stock'],
+  ['s','விற்பனை (A4 Bill)','Sales (A4 Bill)'],
+  ['y','பணம் & செலவு','Payments & Expenses'],
+  ['l','கணக்குப் பட்டியல்','Masters & Ledgers'],
+  ['r','அறிக்கைகள்','Reports & P&L']
+];
+
+const fm = i => S.f.find(x => x.id == i);
+const bm = i => S.b.find(x => x.id == i);
+const opt = l => l.map(x => `<option value="${x.id}">${E(x.name)}${x.v?' ('+E(x.v)+')':''}</option>`).join('');
+const F = (i,l,x='') => `<label>${l}<input id="${i}" type="number" inputmode="decimal" step="any" ${x}></label>`;
+const FH = (i,l,x) => F(i,l,x).replace('<label>','<label class="cut hid">');
+const FX = (i,l,x) => F(i,l,x).replace('type="number" inputmode="decimal" step="any"','type="text" readonly');
+const DF = (i,fn='') => `<label>தேதி <b id="${i}f">${fd(td())}</b><input id="${i}" type="date" value="${td()}" oninput="$('${i}f').textContent=fd(this.value);${fn}"></label>`;
+const TX = (i,l,p='') => `<label>${l}<input id="${i}" placeholder="${p}"></label>`;
+const MD = i => `<label>Mode<select id="${i}"><option>Cash</option><option>Bank</option><option>UPI</option></select></label>`;
+const QS = (id,k) => `<input placeholder="🔍 விரைவுத் தேடல்" oninput="qf(this,'${id}','${k}')">`;
+const intr = (pr,rate,days,m) => m=='m' ? Math.round(pr*(rate/100)*Math.max(1,Math.round(days/30))) : m=='d' ? Math.round(pr*(rate/100)/30*days) : 0;
+
+function pName(s,np){
+  s = String(s==null?'':s).trim();
+  if(!s || np) return s;
+  if(/^(திருமதி|திரு|செல்வி)(\.|\s|$)/.test(s) || /^(Dr|Mr|Mrs|Ms|M\/s)(\.|\s|$)/i.test(s)) return s;
+  return 'திரு. ' + s;
+}
+
+const dOf = r => r.d!==undefined ? r.d : (r.net!==undefined ? r.net-(r.int||0)-(r.paid!==undefined?r.paid:(r.fin||0)) : (r.total||0)-(r.recv||0));
+const pvOf = (r,cl) => Math.round((cl - dOf(r))*100)/100;
+const RECT = ['RO','RU','AU','AH','AK'];
+
+function stk(){
+  let u=0, h=0, k=0, wKg=0;
+  S.fe.forEach(e => {
+    if(e.k=='P'){
+      if(e.pmode=='weight'){
+        const gr = GR.find(g=>g[0]==e.grade);
+        if(gr && gr[2]=='H') h += (e.g||0); else u += (e.g||0);
+        wKg += (e.nk||0);
+      } else {
+        u += (e.g||0);
+        wKg += ((e.g||0)*(e.gram||500)/1000);
+      }
+    }
+  });
+  S.dh.forEach(e => { u -= e.p; h += e.p; k += e.p; });
+  S.ad.forEach(a => {
+    const t=a.t, p=a.p;
+    if(t=='RO'){u+=p;h-=p;k-=p}else if(t=='RU'){u-=p;h+=p;k+=p}else if(t=='AU')u+=p;else if(t=='AH')h+=p;else if(t=='AK')k+=p;else if(t=='U')u-=p;else if(t=='H')h-=p;else k-=p;
+  });
+  S.be.forEach(e => {
+    if(e.k=='S') e.rows.forEach(x => {
+      const gr = GR.find(g=>g[0]==x.g);
+      if(gr && gr[2]=='H') h -= (x.pcs||0); else u -= (x.pcs||0);
+      wKg -= (x.nk||0);
+    });
+  });
+  S.hk.forEach(e => k -= e.pcs);
+  return {u, h, k, wKg: Math.round(wKg)};
+}
+
+function avgCost(){
+  let a=0, g=0;
+  S.fe.forEach(e => { if(e.k=='P' && e.g>0){ a += e.amt; g += e.g; } });
+  return g ? a/g : 0;
+}
+
+function flows(){
+  const o=[];
+  S.fe.forEach(e=>{
+    const f=fm(e.fid);
+    if(e.k=='P'&&e.paid) o.push([e.date,'கொள்முதல் - '+(f&&f.name),-e.paid]);
+    if(e.k=='D'||e.k=='A') o.push([e.date,(e.k=='D'?'பாக்கி பட்டுவாடா - ':'முன்பணம் - ')+(f&&f.name),-Math.abs(e.d)]);
+  });
+  S.be.forEach(e=>{
+    const b=bm(e.bid);
+    if(e.k=='S'&&e.recv) o.push([e.date,'விற்பனை - '+(b&&b.name),e.recv]);
+    if(e.k=='C') o.push([e.date,'வசூல் - '+(b&&b.name),Math.abs(e.d)]);
+  });
+  S.hk.forEach(e=>e.recv && o.push([e.date,'மட்டை - '+e.who,e.recv]));
+  S.lb.forEach(e=>o.push([e.date,'கூலி - '+e.who,-e.amt]));
+  S.ex.forEach(e=>o.push([e.date,e.type,-e.amt]));
+  return o;
+}
+
+function sinceFrom(f){
+  const A = S.fe.filter(e=>e.fid==f.id&&e.k=='A').map(e=>e.date).sort();
+  const lp = S.fe.filter(e=>e.fid==f.id&&e.k=='P').map(e=>e.date).sort().slice(-1)[0];
+  return (lp && A.filter(d=>d<=lp).slice(-1)[0]) || A.slice(-1)[0] || '';
+}
+function advCtx(f,pdt){
+  const A = S.fe.filter(e=>e.fid==f.id&&e.k=='A').map(e=>e.date).sort();
+  const sinceDt = f.since || A.filter(d=>d<=pdt).slice(-1)[0] || A.slice(-1)[0] || pdt;
+  const days = Math.max(0, dd(pdt,sinceDt)||0);
+  const rate = (f.rate==null||f.rate==='') ? 2 : f.rate;
+  return {sinceDt, days, rate};
+}
+function recF(f){
+  if(!f) return;
+  f.bal = Math.round(S.fe.filter(e=>e.fid==f.id).reduce((a,e)=>a+e.d,0)*100)/100;
+  if(f.bal>=0) f.since=''; else if(!f.since) f.since=sinceFrom(f);
+  const ps = S.fe.filter(e=>e.fid==f.id&&e.k=='P').map(e=>e.date).sort();
+  f.last = ps.length ? ps[ps.length-1] : (f.lastm||'');
+}
+function recB(b){
+  if(!b) return;
+  b.bal = Math.round(S.be.filter(x=>x.bid==b.id).reduce((a,x)=>a+x.d,0)*100)/100;
+  const s = S.be.filter(x=>x.bid==b.id&&(x.k=='S'||x.k=='H')).map(x=>x.date).sort();
+  b.ls = s.length ? s[s.length-1] : '';
+}
+function recAll(){ S.f.forEach(recF); S.b.forEach(recB); }
+
+function balTxt(v,ui){
+  v = Math.round(v*100)/100;
+  const E_ = ui && lang=='en';
+  const fmt = Math.abs(v) % 1 === 0 ? R(Math.abs(v)) : R2(Math.abs(v));
+  return v>0 ? fmt+(E_?' (Due)':' (பாக்கி)') : v<0 ? fmt+(E_?' (Advance)':' (முன்பணம்)') : '₹0'+(E_?' (Nil)':' (நேர்)');
+}
+function balH(v){ return `<span class="${v>0?'red':v<0?'grn':''}">${balTxt(v,1)}</span>`; }
+
+/* ---- Navigation & Render ---- */
+function go(x,pre){
+  ed=null; cur=x; render();
+  if(pre && $('pf0')){ $('pf0').value=pre; calcP('f'); }
+}
+function subs(key,list){
+  const c = sb[key] || list[0][0];
+  return `<div class="sub">${list.map(([k,l])=>`<button class="${c==k?'on':''}" onclick="sb['${key}']='${k}';render()">${l}</button>`).join('')}</div>`;
+}
+function alerts(){
+  const h = S.f.filter(f=>f.last && dd(td(),f.last)>=(f.cycle||55));
+  const o = S.b.filter(b=>b.bal>0 && b.ls && dd(td(),b.ls)>=15);
+  return {h,o};
+}
+function render(){
+  if(isExpired()){ showExpiryLock(); return; }
+  $('nav').innerHTML = TABS.map(([k,a,b])=>`<button class="${cur==k?'on':''}" onclick="go('${k}')">${t(a,b)}</button>`).join('');
+  $('m').innerHTML = (ed ? '<div class="warn">✏️ திருத்தம் செய்யப்படுகிறது - சேமித்தால் பழைய பதிவு மாற்றப்படும் <button class="btn s x" onclick="ed=null;render()">ரத்து</button></div>' : '') + V[cur]();
+  const al = alerts();
+  $('bell').textContent = al.h.length + al.o.length;
+  if(cur=='p'){ if((sb.p||'count')=='count') calcP('f'); else calcPW(); }
+  if(cur=='s' && $('rows')){ if(!$('rows').children.length) addRow(); calcS(); }
+  if(cur=='y'){ yi(); ci(); ykTog(); }
+  if(cur=='u' && $('rc_prev')) cRC();
+  updateDemoBar();
+  trAll();
+}
+
+/* ---- Views ---- */
+const V = {};
+
+V.d = () => {
+  const s = stk(), al = alerts(), cash = flows().reduce((a,x)=>a+x[2],0);
+  const pay = S.f.filter(f=>f.bal>0), adv = S.f.filter(f=>f.bal<0), rc = S.b.filter(b=>b.bal>0);
+  return `
+  <div class="info">
+    <b>👋 வரவேற்கிறோம்!</b> இந்த மாதிரி App-இல் <b>எண்ணிக்கை கொள்முதல்</b>, <b>எடை கொள்முதல் (கழிவுடன்)</b>, மற்றும் <b>A4 Tax Invoice (காட்டா எடை − கழிவு எடை = நிகர எடை)</b> ஆகிய அனைத்தும் சோதித்துப் பார்க்கத் தயாராக உள்ளன.
+    <div style="margin-top:6px">
+      <button class="btn s o" onclick="openSampleA4()">📄 மாதிரி A4 விற்பனை பில் பார்</button>
+      <button class="btn s" onclick="go('s')">+ புதிய A4 விற்பனை பில் போடு</button>
+      <button class="btn s" onclick="sb.p='weight';go('p')">+ எடை கொள்முதல் சோதனை</button>
+    </div>
+  </div>
+  <div class="g">
+    <div class="card"><div class="k">உரிக்காத காய் இருப்பு</div><div class="v">${s.u.toLocaleString('en-IN')} காய்</div></div>
+    <div class="card"><div class="k">உரித்த காய் இருப்பு</div><div class="v">${s.h.toLocaleString('en-IN')} காய்</div></div>
+    <div class="card"><div class="k">தேங்காய் மட்டை இருப்பு</div><div class="v">${s.k.toLocaleString('en-IN')} மட்டை</div></div>
+    <div class="card"><div class="k">தோராய நிகர எடை இருப்பு</div><div class="v">${s.wKg.toLocaleString('en-IN')} Kg</div></div>
+  </div>
+  <div class="g">
+    <div class="card" style="cursor:pointer" onclick="sb.r='db';go('r')"><div class="k">தற்போதைய கல்லா இருப்பு</div><div class="v">${R(cash)}</div></div>
+    <div class="card"><div class="k">விவசாயி / சப்ளையர் பாக்கி</div><div class="v">${R(pay.reduce((a,f)=>a+f.bal,0))}</div><div class="k">${pay.length} நபர்கள்</div></div>
+    <div class="card"><div class="k">கொடுத்த முன்பணம்</div><div class="v">${R(-adv.reduce((a,f)=>a+f.bal,0))}</div><div class="k">${adv.length} நபர்கள்</div></div>
+    <div class="card"><div class="k">வியாபாரிகளிடம் வர வேண்டியது</div><div class="v">${R(rc.reduce((a,b)=>a+b.bal,0))}</div><div class="k">${rc.length} நபர்கள்</div></div>
+  </div>
+  ${recentActivityCard()}`;
+};
+
+/* ---- Purchase View: Supports BOTH Count-Based & Weight-Based ---- */
+V.p = () => {
+  const mode = sb.p || 'count';
+  const tabs = subs('p', [['count','🥥 எண்ணிக்கை கொள்முதல் (Count)'],['weight','⚖️ எடை கொள்முதல் (Weight + கழிவு)']]);
+  if(mode === 'weight'){
+    return tabs + `<div class="card"><h3>⚖️ எடை கொள்முதல் (Weight-to-Weight Purchase)</h3>
+      <div class="g">
+        ${DF('pw_dt')}
+        <label>சப்ளையர் / மண்டி${QS('pw_f','f')}<select id="pw_f" onchange="calcPW()">${opt(S.f)}</select></label>
+        <div><button class="btn s o" onclick="partyModal('f')">+ புதிய சப்ளையர்</button></div>
+      </div>
+      <div id="pw_info" class="k" style="margin:6px 0"></div>
+      <div class="g">
+        <label>ரகம்<select id="pw_gr" onchange="calcPW()">${GR.map(g=>`<option value="${g[0]}">${g[1]}</option>`).join('')}</select></label>
+        ${F('pw_pcs','காய்கள் எண்ணிக்கை (இருப்புக்கு - Optional)','value=0 oninput="calcPW()"')}
+        ${F('pw_gk','காட்டா எடை (Gross Kg)','oninput="calcPW(\'gk\')"')}
+        ${F('pw_dp','கழிவு % (Default 3%)','value=3 oninput="calcPW(\'dp\')"')}
+        ${F('pw_dk','கழிவு எடை (Deduction Kg)','oninput="this.dataset.m=1;calcPW(\'dk\')"')}
+        ${F('pw_nk','நிகர எடை (Net Kg)','readonly')}
+        ${F('pw_rt','1 கிலோ விலை ₹','value=42.5 oninput="calcPW()"')}
+        ${F('pw_amt','மொத்தத் தொகை ₹','readonly')}
+      </div>
+      <div class="g" style="margin-top:8px">
+        ${F('pw_cut','வண்டி / கூலி கழிப்பு ₹ (இருந்தால்)','value=0 oninput="calcPW()"')}
+        ${F('pw_net','பில் நிகரத் தொகை ₹','readonly')}
+        ${F('pw_paid','இப்போது கொடுக்கும் தொகை ₹','oninput="this.dataset.m=1;calcPW(\'paid\')"')}
+        ${MD('pw_md')}
+        ${TX('pw_note','குறிப்பு / வண்டி எண்')}
+        ${FX('pw_cl','புதிய கணக்கு இருப்பு','readonly')}
+      </div>
+      <button class="btn" onclick="savPW(0)">💾 எடை கொள்முதல் சேமி</button>
+      <button class="btn o" onclick="savPW(1)">📄 சேமித்து A4 பில் / Share</button>
+      <button class="btn x" onclick="ed=null;render()">✕ ரத்து</button>
+    </div>`;
+  }
+  return tabs + `<div class="card"><h3>🥥 எண்ணிக்கை கொள்முதல் (Count-Based Purchase)</h3>
+    <div class="g">${DF('pdt',"calcP('dt')")}<label>விவசாயி / சப்ளையர்${QS('pf0','f')}<select id="pf0" onchange="fSel()">${opt(S.f)}</select></label><div><button class="btn s o" onclick="partyModal('f')">+ புதிய விவசாயி</button></div></div>
+    <div id="pinfo" class="k" style="margin:6px 0"></div>
+    <div class="g">
+      ${F('pg','வெட்டிய மொத்த காய்கள்','oninput="calcP(\'g\')"')}
+      ${F('pp','இலாபக் காய் %','value=8 oninput="calcP(\'pp\')"')}
+      ${F('pd','இலாபக் காய் எண்ணிக்கை','oninput="this.dataset.m=1;calcP(\'pd\')"')}
+      ${F('pb','பில் நிகர காய்கள்','readonly')}
+      ${F('pr','1 காய் விலை ₹','value=22 oninput="calcP(\'pr\')"')}
+      ${F('pa','தேங்காய் மொத்தத் தொகை ₹','readonly')}
+      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="pct" onchange="ctog()">+ வெட்டுக் கூலி கழிப்பு உள்ளதா?</label>
+      ${FH('pcr','1 காய் வெட்டுக் கூலி ₹','value=0 oninput="calcP(\'pcr\')"')}
+      ${FH('pc','மொத்த வெட்டுக் கூலி ₹','oninput="this.dataset.m=1;calcP(\'pc\')"')}
+      ${F('pgm','1 காயின் தோராய எடை (g)','value=500')}
+      ${F('pn','பில் நிகரத் தொகை ₹','readonly')}
+    </div>
+    <div id="pint" style="display:none;border-top:1px dashed var(--ac);margin-top:10px;padding-top:8px">
+      <b style="color:var(--ac)">முன்பணம் & வட்டி கழிப்பு</b><div id="ptxt" class="k"></div>
+      <label><input type="radio" name="im" value="m" checked onchange="calcP('i')"> முழு மாத வட்டி</label>
+      <label><input type="radio" name="im" value="d" onchange="calcP('i')"> நாள் கணக்கு வட்டி</label>
+      <label><input type="radio" name="im" value="n" onchange="calcP('i')"> வட்டி இல்லை</label>
+      <div class="g">${F('pi','இன்று கழிக்கும் வட்டி ₹','oninput="this.dataset.m=1;calcP(\'pi\')"')}${F('pq','இன்று கழிக்கும் அசல் ₹','oninput="this.dataset.m=1;calcP(\'pq\')"')}</div>
+    </div>
+    <div class="g" style="margin-top:8px">
+      ${F('pfin','இறுதி பட்டுவாடா ₹','readonly')}
+      ${F('pw','இப்போது கொடுக்கும் தொகை ₹','oninput="this.dataset.m=1;calcP(\'pw\')"')}
+      ${MD('pm')}${TX('pnote','குறிப்பு')}${FX('pcl','புதிய கணக்கு இருப்பு','readonly')}
+    </div>
+    <button class="btn" onclick="savP(0)">💾 கொள்முதல் சேமி</button>
+    <button class="btn o" onclick="savP(1)">📄 சேமித்து A4 பில் / Share</button>
+    <button class="btn x" onclick="ed=null;render()">✕ ரத்து</button>
+  </div>`;
+};
+
+function calcPW(s){
+  if(!$('pw_gk')) return;
+  const gk = n('pw_gk'), dp = n('pw_dp');
+  if(s=='gk' || s=='dp') $('pw_dk').dataset.m = '';
+  if(!$('pw_dk').dataset.m) $('pw_dk').value = gk ? +(gk * dp / 100).toFixed(2) : '';
+  const dk = n('pw_dk'), nk = Math.max(0, +(gk - dk).toFixed(2));
+  $('pw_nk').value = nk;
+  const amt = +(nk * n('pw_rt')).toFixed(2);
+  $('pw_amt').value = amt;
+  const net = +(amt - n('pw_cut')).toFixed(2);
+  $('pw_net').value = net;
+  if(s!='paid' && s!='e' && !$('pw_paid').dataset.m) $('pw_paid').value = net;
+  const f0 = fm($('pw_f').value);
+  if(!f0){ $('pw_info').textContent=''; return; }
+  const effBal = f0.bal - (ed && ed.k=='P' && ed.old.fid==f0.id ? ed.old.d : 0);
+  $('pw_info').textContent = effBal>0 ? 'பழைய பாக்கி (கொடுக்க வேண்டியது): '+R2(effBal) : effBal<0 ? 'பழைய முன்பணம்: '+R2(-effBal) : 'கணக்கு இருப்பு: இல்லை';
+  $('pw_cl').value = balTxt(effBal + net - n('pw_paid'), 1);
+}
+
+function savPW(w){
+  const isEdit = !!(ed && ed.old && ed.k=='P');
+  if(!checkDemoLimit(isEdit)) return;
+  const f = fm($('pw_f').value), gk = n('pw_gk'), dk = n('pw_dk'), nk = n('pw_nk'), rt = n('pw_rt');
+  if(!f || gk<=0) return alert('சப்ளையர் & காட்டா எடை தேவை');
+  if(dk<0 || dk>=gk) return alert('கழிவு எடை சரியாக உள்ளிடவும்');
+  if(rt<=0) return alert('1 கிலோ விலை உள்ளிடவும்');
+  const gr = GR.find(x=>x[0]==$('pw_gr').value) || GR[0];
+  const amt = +(nk * rt).toFixed(2), cut = n('pw_cut'), net = +(amt - cut).toFixed(2), paid = n('pw_paid');
+  const r = {
+    k:'P', pmode:'weight', invNo: isEdit && ed.old.invNo ? ed.old.invNo : 'PB-'+String(++S._invSeq).padStart(3,'0'),
+    fid:f.id, date:$('pw_dt').value, grade:gr[0], hsn:gr[3], g:n('pw_pcs'),
+    gk, dp:n('pw_dp'), dk, nk, rate:rt, amt, cut, net, int:0, pr:0, fin:net, paid,
+    mode:$('pw_md').value, note:$('pw_note').value, d:+(net-paid).toFixed(2), id:uid()
+  };
+  putF(r); consumeDemoSlot(isEdit); recF(f); save(); render();
+  if(w) showBillDoc(buildPurchaseDoc(r, f, f.bal), f.ph);
+}
+
+function fSel(){ ['pi','pq','pw'].forEach(i=>{if($(i))$(i).dataset.m=''}); $('pct').checked=false; ctog(1); $('pcr').value=0; $('pc').dataset.m=''; calcP('f'); }
+function ctog(init){
+  const on = $('pct') && $('pct').checked;
+  document.querySelectorAll('.cut').forEach(e=>e.classList.toggle('hid',!on));
+  if(init) return;
+  if(on) $('pcr').value=1.25; else { $('pcr').value=0; $('pc').dataset.m=''; }
+  calcP('pcr');
+}
+function calcP(s){
+  if(!$('pg')) return;
+  const g = n('pg');
+  if(s=='g'||s=='pp') $('pd').dataset.m='';
+  if(s=='g'||s=='pcr') $('pc').dataset.m='';
+  if(!$('pd').dataset.m) $('pd').value = Math.round(g*n('pp')/100);
+  const bill = g - n('pd'); $('pb').value = bill;
+  const amt = bill * n('pr'); $('pa').value = amt;
+  if(!$('pc').dataset.m) $('pc').value = +(g*n('pcr')).toFixed(2);
+  const net = amt - n('pc'); $('pn').value = net;
+  const f0 = fm($('pf0').value); if(!f0){ $('pinfo').textContent=''; return; }
+  const f = Object.assign({}, f0, {bal: f0.bal - (ed&&ed.k=='P'&&ed.old.fid==f0.id?ed.old.d:0)});
+  const ac = f.bal<0 ? advCtx(f,$('pdt').value) : null;
+  $('pinfo').innerHTML = f.bal<0 ? `முன்பணம்: ${R(-f.bal)} (வட்டி ${ac.rate}%, ${ac.days} நாட்கள்)` : f.bal>0 ? `பழைய பாக்கி (கொடுக்க வேண்டியது): ${R(f.bal)}` : 'கணக்கு இருப்பு: இல்லை';
+  let it=0, pq=0;
+  if(f.bal<0){
+    $('pint').style.display='block';
+    const days=ac.days, pr=-f.bal;
+    if(['i','f','dt'].includes(s)) $('pi').dataset.m='';
+    if(s!='pq'&&s!='pw'&&s!='e') $('pq').dataset.m='';
+    if(!$('pi').dataset.m) $('pi').value = intr(pr,ac.rate,days,document.querySelector('[name=im]:checked').value);
+    it = n('pi');
+    $('ptxt').textContent = `${days} நாட்கள் | அசல் ${R(pr)} | மாத வட்டி ${ac.rate}%`;
+    if(!$('pq').dataset.m) $('pq').value = Math.min(pr, Math.max(0, net-it));
+    pq = n('pq');
+  } else {
+    $('pint').style.display='none'; $('pi').value=0; $('pq').value=0;
+  }
+  const fin = net - it - pq; $('pfin').value = fin;
+  if(s!='pw'&&s!='e') $('pw').dataset.m='';
+  if(!$('pw').dataset.m) $('pw').value = fin;
+  $('pcl').value = balTxt(f.bal + net - it - n('pw'), 1);
+}
+function savP(w){
+  const isEdit = !!(ed && ed.old && ed.k=='P');
+  if(!checkDemoLimit(isEdit)) return;
+  const f = fm($('pf0').value), g = n('pg');
+  if(!f || g<=0) return alert('விவசாயி & காய்கள் தேவை');
+  if(n('pd')<0 || n('pd')>=g) return alert('இலாபக் காய் எண்ணிக்கை சரியாக உள்ளிடவும்');
+  if(n('pr')<=0) return alert('1 காய் விலை உள்ளிடவும்');
+  const r = {
+    k:'P', pmode:'count', invNo: isEdit && ed.old.invNo ? ed.old.invNo : 'PB-'+String(++S._invSeq).padStart(3,'0'),
+    fid:f.id, date:$('pdt').value, g, ded:n('pd'), pp:n('pp'), bill:n('pb'), rate:n('pr'), amt:n('pa'),
+    cut:n('pc'), gram:n('pgm'), net:n('pn'), int:n('pi'), pr:n('pq'), fin:n('pfin'), paid:n('pw'),
+    mode:$('pm').value, im:(document.querySelector('[name=im]:checked')||{}).value||'', note:$('pnote').value, id:uid()
+  };
+  r.d = +(r.net - r.int - r.paid).toFixed(2);
+  putF(r); consumeDemoSlot(isEdit); recF(f);
+  if(f.bal<0 && !f.since) f.since=r.date;
+  if(f.bal<0 && r.pr>0) f.since=r.date;
+  save(); render();
+  if(w) showBillDoc(buildPurchaseDoc(r, f, f.bal), f.ph);
+}
+
+/* ---- Dehusking & Stock ---- */
+V.u = () => {
+  const s = stk(), c = sb.u || 'a';
+  const RL = {RO:'உரியல் கூடுதல் கணக்கு நேர் செய்தல்',RU:'உரியல் குறைவு கணக்கு நேர் செய்தல்',AU:'உரிக்காத காய் இருப்பு கூட்டு (+)',AH:'உரித்த காய் இருப்பு கூட்டு (+)',AK:'மட்டை இருப்பு கூட்டு (+)'};
+  const bar = `<div class="card"><b>உரிக்காத காய்: ${s.u} | உரித்த காய்: ${s.h} | மட்டை: ${s.k}</b></div>`;
+  const fa = `<div class="card"><div class="g">${DF('ud')}${F('up','உரிக்கப்பட்ட காய்கள்','oninput="cU()"')}${F('ul','உரியல் கூலி ₹','oninput="cU()"')}${F('ut','டீ/இதர ₹','value=0 oninput="cU()"')}${TX('un','குறிப்பு')}</div><div class="g"><div class="card">மொத்த செலவு<div class="v" id="uc">₹0</div></div><div class="card">1 காய்க்கு<div class="v" id="ucp">₹0.00</div></div><div class="card">புதிய மட்டை<div class="v" id="uk">+0</div></div></div><button class="btn" onclick="savU()">💾 சேமி</button></div>`;
+  const fb = `<div class="card"><div class="g">${DF('ad')}<label>பொருள்<select id="at"><option value="U">உரிக்காத காய்</option><option value="H">உரித்த காய்</option><option value="K">தேங்காய் மட்டை</option></select></label>${F('ap','கழிவு எண்ணிக்கை')}${TX('ar','காரணம்')}</div><button class="btn" onclick="savAd()">💾 சேமி</button></div>`;
+  const fc = `<div class="card"><h3>இருப்பு நேர் செய்தல்</h3><div class="g">${DF('rcd')}<label>மாற்றத்தின் வகை<select id="rct" onchange="cRC()"><option value="RO">உரியல் கூடுதல் நேர் செய்தல் (+உரிக்காத / −உரித்த / −மட்டை)</option><option value="RU">உரியல் குறைவு நேர் செய்தல் (−உரிக்காத / +உரித்த / +மட்டை)</option><option value="AU">உரிக்காத காய் இருப்பு கூட்டு (+)</option><option value="AH">உரித்த காய் இருப்பு கூட்டு (+)</option><option value="AK">மட்டை இருப்பு கூட்டு (+)</option></select></label>${F('rcp','வித்தியாச எண்ணிக்கை','oninput="cRC()"')}${TX('rcr','காரணம்')}</div><div id="rc_prev" class="card"></div><button class="btn" onclick="savRec()">💾 இருப்பு நேர் செய்</button></div>`;
+  return bar + subs('u',[['a','தினசரி உரியல்'],['b','குடோன் சேதாரம்'],['c','இருப்பு நேர் செய்தல்']]) + (c=='a'?fa:c=='b'?fb:fc) + (c=='a'?lst('dh',e=>`${e.p} காய் | ${R(e.cost)}`):c=='b'?lst('ad',e=>`${{U:'உரிக்காத',H:'உரித்த',K:'மட்டை'}[e.t]} -${e.p} ${e.r||''}`,e=>!RECT.includes(e.t)):lst('ad',e=>`<b>${RL[e.t]||e.t}</b> ${e.p} ${e.r||''}`,e=>RECT.includes(e.t)));
+};
+function recD(t,p){return t=='RO'?[p,-p,-p]:t=='RU'?[-p,p,p]:t=='AU'?[p,0,0]:t=='AH'?[0,p,0]:t=='AK'?[0,0,p]:[0,0,0]}
+function cRC(){
+  const bx=$('rc_prev'); if(!bx) return;
+  const s=stk(), d=recD($('rct').value, Math.max(0,n('rcp')));
+  const row=(l,a,x)=>`<div>${l}: ${a} → <b class="${x>0?'grn':x<0?'red':''}">${a+x}</b></div>`;
+  bx.innerHTML = row('உரிக்காத காய்',s.u,d[0])+row('உரித்த காய்',s.h,d[1])+row('மட்டை',s.k,d[2]);
+}
+function cU(){ const p=n('up'), c=n('ul')+n('ut'); $('uc').textContent=R(c); $('ucp').textContent='₹'+(p?(c/p).toFixed(2):'0.00'); $('uk').textContent='+'+p; }
+function savU(){ const isEdit=!!(ed&&ed.arr=='dh'); if(!checkDemoLimit(isEdit))return; const p=n('up'); if(p<=0)return alert('காய்கள் தேவை'); put('dh',{date:$('ud').value,p,lab:n('ul'),oth:n('ut'),cost:n('ul')+n('ut'),note:$('un').value}); consumeDemoSlot(isEdit); save(); render(); }
+function savAd(){ const isEdit=!!(ed&&ed.arr=='ad'); if(!checkDemoLimit(isEdit))return; if(n('ap')<=0)return alert('எண்ணிக்கை தேவை'); put('ad',{date:$('ad').value,t:$('at').value,p:n('ap'),r:$('ar').value}); consumeDemoSlot(isEdit); save(); render(); }
+function savRec(){ const isEdit=!!(ed&&ed.arr=='ad'); if(!checkDemoLimit(isEdit))return; if(n('rcp')<=0)return alert('எண்ணிக்கை தேவை'); put('ad',{date:$('rcd').value,t:$('rct').value,p:n('rcp'),r:$('rcr').value}); consumeDemoSlot(isEdit); save(); render(); }
+
+/* ---- Sales View (A4 Tax Invoice Ready with Exact Weight Deduction) ---- */
+const stBar = () => { const s=stk(); return `<div class="card" id="stbar" style="padding:8px 12px"><b>குடோன் இருப்பு:</b> உரிக்காத <b>${s.u}</b> | உரித்த <b>${s.h}</b> | மட்டை <b>${s.k}</b><span id="stb2" class="k"></span></div>`; };
+
+V.s = () => {
+  const c = sb.s || 'a';
+  const nextInv = ed && ed.k=='S' && ed.old.invNo ? ed.old.invNo : String(S._invSeq);
+  return stBar() + subs('s',[['a','📄 தேங்காய் விற்பனை (A4 Tax Invoice)'],['b','மட்டை விற்பனை']]) + (c=='a' ? `
+  <div class="card">
+    <div class="g">
+      ${DF('sd')}
+      <label>Invoice எண்<input id="sinv" value="${E(nextInv)}"></label>
+      <label>வியாபாரி (Bill To)${QS('sb','b')}<select id="sb" onchange="calcS()">${opt(S.b)}</select></label>
+      <div style="display:flex;align-items:end"><button class="btn s o" onclick="partyModal('b')">+ புதிய வியாபாரி</button></div>
+    </div>
+    <div class="g" style="margin-top:6px">
+      <label>Place of Supply<input id="spos" value="33-Tamil Nadu"></label>
+      ${TX('sveh','வண்டி எண் (Vehicle No - Optional)','TN 55 AB 1234')}
+    </div>
+    <div id="sinfo" class="k" style="margin:6px 0"></div>
+    <div id="rows"></div>
+    <button class="btn s" onclick="addRow()">+ மேலும் ஒரு ரகம் சேர்</button>
+    <div id="swarn"></div>
+    <div id="ssum" class="card" style="margin-top:8px"></div>
+    <div class="g">
+      <div class="card">பில் மொத்தம்<div class="v" id="st">₹0.00</div></div>
+      ${F('sr','இப்போது வாங்கிய தொகை ₹','value=0 oninput="calcS()"')}
+      ${MD('smd')}${TX('sn','Notes')}
+      <div class="card">புதிய பாக்கி<div class="v" id="scl">₹0</div></div>
+    </div>
+    <button class="btn" onclick="savS(0)">💾 விற்பனை சேமி</button>
+    <button class="btn o" onclick="savS(1)">📄 சேமித்து A4 பில் / Share</button>
+  </div>` : `
+  <div class="card">
+    <div class="k">மட்டை இருப்பு: ${stk().k}</div>
+    <div class="g">${DF('hd')}<label>வியாபாரி (கடன் விற்பனைக்கு)<select id="hb" onchange="hbSel()"><option value="">— ரொக்கம் —</option>${opt(S.b)}</select></label>${TX('hw','வாங்குபவர்')}${F('hp','மட்டைகள்','oninput="$(\'ht\').value=n(\'hp\')*n(\'hr\')"')}${F('hr','1 மட்டை ₹','value=1 oninput="$(\'ht\').value=n(\'hp\')*n(\'hr\')"')}${F('ht','மொத்தம் ₹','readonly')}${F('hv','வாங்கிய தொகை ₹')}</div>
+    <button class="btn" onclick="savH(0)">💾 சேமி</button>
+    <button class="btn o" onclick="savH(1)">📄 சேமித்து A4 பில்</button>
+  </div>` + lst('hk', e=>`${e.who} - ${e.pcs} மட்டை ${R(e.tot)}`));
+};
+
+function addRow(){
+  const d = document.createElement('div');
+  d.className = 'card';
+  d.style.background = 'var(--bg)';
+  d.innerHTML = `<div class="g">
+    <label>ரகம் / Item<select class="gr" onchange="calcS()">
+      <optgroup label="உரித்த காய்">${GR.filter(g=>g[2]=='H').map(g=>`<option value="${g[0]}">${g[1]}</option>`).join('')}</optgroup>
+      <optgroup label="உரிக்காத காய்">${GR.filter(g=>g[2]=='U').map(g=>`<option value="${g[0]}">${g[1]}</option>`).join('')}</optgroup>
+    </select></label>
+    <label>HSN/SAC<input class="hsn" value="${DEMO_CFG.company.defaultHsn}"></label>
+    <label>ஏற்றிய காய்கள் (Optional)<input class="pc" type="number" inputmode="numeric" placeholder="0" oninput="calcS()"></label>
+    <label>காட்டா எடை (Gross Kg)<input class="gk" type="number" inputmode="decimal" step="any" oninput="this.closest('.card').querySelector('.dk').dataset.m='';calcS()"></label>
+    <label>கழிவு % (Default 3%)<input class="dp" type="number" inputmode="decimal" step="any" value="3" oninput="this.closest('.card').querySelector('.dk').dataset.m='';calcS()"></label>
+    <label>கழிவு எடை (Kg)<input class="dk" type="number" inputmode="decimal" step="any" oninput="this.dataset.m=1;calcS()"></label>
+    <label>1 கிலோ விலை ₹<input class="rt" type="number" inputmode="decimal" step="any" oninput="calcS()"></label>
+    <div class="k" style="display:flex;flex-direction:column;justify-content:center">
+      <span>நிகர எடை: <b class="nk">0</b> Kg</span>
+      <span>தொகை: <b class="tt">₹0.00</b></span>
+      <span class="av"></span>
+      <button class="btn s x" style="margin-top:4px;width:fit-content" onclick="this.closest('.card').remove();calcS()">நீக்கு</button>
+    </div>
+  </div>`;
+  $('rows').appendChild(d);
+}
+
+function rowsS(){
+  return [...$('rows').children].map(c => {
+    const q = s => c.querySelector(s);
+    const gk = +q('.gk').value || 0;
+    const dp = +q('.dp').value || 0;
+    const dk = q('.dk').dataset.m ? (+q('.dk').value || 0) : +(gk * dp / 100).toFixed(2);
+    if(!q('.dk').dataset.m) q('.dk').value = gk ? dk : '';
+    const effDp = gk ? +((dk/gk)*100).toFixed(2) : dp;
+    const nk = Math.max(0, +(gk - dk).toFixed(2));
+    const rate = +q('.rt').value || 0;
+    const pcs = +q('.pc').value || 0;
+    const tot = +(nk * rate).toFixed(2);
+    q('.nk').textContent = nk;
+    q('.tt').textContent = R2(tot);
+    q('.av').textContent = pcs ? Math.round(gk*1000/pcs)+'g/காய்' : '';
+    const gCode = q('.gr').value;
+    const gObj = GR.find(x=>x[0]==gCode) || GR[0];
+    return { g:gCode, itemName:gObj[1], hsn:q('.hsn').value.trim()||gObj[3], pcs, gk, dp:effDp, dk, nk, rate, tot };
+  });
+}
+
+function calcS(){
+  if(!$('rows')) return;
+  const rs = rowsS();
+  const tot = +(rs.reduce((a,x)=>a+x.tot,0)).toFixed(2);
+  const b0 = bm($('sb').value);
+  const b = b0 && Object.assign({}, b0, {bal: b0.bal - (ed&&ed.k=='S'&&ed.old.bid==b0.id?ed.old.d:0)});
+  $('st').textContent = R2(tot);
+  const prev = b ? b.bal : 0, rc = n('sr');
+  $('scl').textContent = balTxt(prev + tot - rc, 1);
+  if($('ssum')){
+    $('ssum').innerHTML = '<table>' + [
+      ['இன்றைய பில் மொத்தம் (Sub Total)', R2(tot)],
+      ['பழைய பாக்கி / முன்பணம்', balTxt(prev,1)],
+      ['மொத்தம் வர வேண்டிய தொகை', balTxt(prev+tot,1)],
+      ['இப்போது வாங்கிய தொகை', R2(rc)],
+      ['புதிய பாக்கி', balTxt(prev+tot-rc,1)]
+    ].map(r=>`<tr><td>${r[0]}</td><td style="text-align:right"><b>${r[1]}</b></td></tr>`).join('') + '</table>';
+  }
+  $('sinfo').textContent = b ? (b.bal>0?'பழைய பாக்கி: '+R2(b.bal):b.bal<0?'முன்பணம்: '+R2(-b.bal):'கணக்கு இருப்பு: இல்லை') + (b.gstin?' | GSTIN: '+b.gstin:'') : '';
+}
+
+function savS(w){
+  const isEdit = !!(ed && ed.old && ed.k=='S');
+  if(!checkDemoLimit(isEdit)) return;
+  const b = bm($('sb').value), rs = rowsS().filter(x=>x.gk>0);
+  if(!b || !rs.length) return alert('வியாபாரி & காட்டா எடை தேவை');
+  for(const x of rs){
+    if(x.gk<=0) return alert('காட்டா எடை உள்ளிடவும்');
+    if(x.rate<=0) return alert('1 கிலோ விலை உள்ளிடவும்');
+    if(x.dk<0 || x.dk>=x.gk) return alert('கழிவு எடை சரியாக உள்ளிடவும்');
+  }
+  const total = +(rs.reduce((a,x)=>a+x.tot,0)).toFixed(2), recv = n('sr');
+  const invNo = $('sinv').value.trim() || String(S._invSeq);
+  const r = {
+    k:'S', invNo, bid:b.id, date:$('sd').value, pos:$('spos').value.trim()||'33-Tamil Nadu',
+    veh:$('sveh').value.trim(), rows:rs, total, recv, mode:$('smd').value, note:$('sn').value.trim(),
+    d:+(total-recv).toFixed(2), id:uid()
+  };
+  if(!isEdit) S._invSeq = Math.max(S._invSeq + 1, (parseInt(invNo)||S._invSeq) + 1);
+  putB(r, b); consumeDemoSlot(isEdit); save(); render();
+  if(w) showBillDoc(buildSalesDoc(r, b, b.bal), b.ph);
+}
+
+function hbSel(){ const b=bm($('hb').value); if(b) $('hw').value=b.name; }
+function savH(w){
+  const isEdit = !!(ed && ed.arr=='hk');
+  if(!checkDemoLimit(isEdit)) return;
+  const pcs=n('hp'), rate=n('hr'), tot=n('ht'), recv=n('hv');
+  if(pcs<=0 || rate<=0) return alert('மட்டை எண்ணிக்கை & விலை தேவை');
+  const bid=$('hb').value, b=bid?bm(bid):null;
+  const old = isEdit ? S.hk[ed.i] : null;
+  const r = {id:old?old.id:uid(), date:$('hd').value, who:$('hw').value||'Cash', pcs, rate, tot, recv};
+  const hk2 = 'H_'+r.id, prev = S.be.find(e=>e.id==hk2);
+  put('hk', r);
+  if(b){
+    const h = {id:hk2, k:'H', bid:b.id, date:r.date, total:tot, recv, pcs, hk:r.id, d:tot-recv};
+    if(prev) S.be[S.be.indexOf(prev)] = h; else S.be.push(h);
+    recB(b);
+  }
+  consumeDemoSlot(isEdit); save(); render();
+  if(w) showBillDoc(buildHuskDoc(r, b, b?b.bal:(tot-recv)), b?b.ph:'');
+}
+
+/* ---- Payments & Expenses ---- */
+V.y = () => {
+  const c = sb.y || 'a';
+  return subs('y',[['a','சப்ளையர் பட்டுவாடா'],['c','வியாபாரி வசூல்'],['l','கூலி'],['x','இதர செலவுகள்']]) + ({
+    a:`<div class="card"><div class="g">${DF('yd')}<label>விவசாயி / சப்ளையர்${QS('yf','f')}<select id="yf" onchange="yi()">${opt(S.f)}</select></label></div><div id="yinf" class="k" style="margin:6px 0"></div><label><input type="radio" name="yk" value="D" checked> பாக்கி பட்டுவாடா</label><label><input type="radio" name="yk" value="A"> புதிய முன்பணம்</label><div class="g"><label>வட்டி உண்டா?<select id="yv"><option value="0">இல்லை 0%</option><option value="1">ஆம்</option></select></label>${F('yr','மாத வட்டி %','value=2')}${F('ya','தொகை ₹')}${MD('ym')}${TX('yn','Notes')}</div><button class="btn" onclick="savY(0)">💾 சேமி</button><button class="btn o" onclick="savY(1)">📄 சேமித்து A4 ரசீது</button></div>`,
+    c:`<div class="card"><div class="g">${DF('cd')}<label>வியாபாரி${QS('cb','b')}<select id="cb" onchange="ci()">${opt(S.b)}</select><span id="cinf" class="k"></span></label>${F('ca','வசூல் தொகை ₹')}${MD('cm')}${TX('cn','Notes')}</div><button class="btn" onclick="savC(0)">💾 சேமி</button><button class="btn o" onclick="savC(1)">📄 சேமித்து A4 ரசீது</button></div>`,
+    l:`<div class="card"><div class="g">${DF('ld')}<label>வகை<select id="lt"><option value="c">வெட்டுக் கூலி</option><option value="d">உரியல் கூலி</option></select></label>${TX('lw','தொழிலாளர்/மேஸ்திரி')}${F('la','தொகை ₹')}${TX('ln','குறிப்பு')}</div><button class="btn" onclick="savLb()">💾 சேமி</button></div>`+lst('lb',e=>`${e.who} ${e.t=='c'?'வெட்டுக் கூலி':'உரியல் கூலி'} ${R(e.amt)}`),
+    x:`<div class="card"><div class="g">${DF('xd')}<label>வகை<select id="xt"><option>வண்டி வாடகை</option><option>லோடுமேன் கூலி</option><option>குடோன் வாடகை</option><option>கரண்ட் பில்</option><option>இதர செலவுகள்</option></select></label>${F('xa','தொகை ₹')}${TX('xn','விவரம்')}</div><button class="btn" onclick="savEx()">💾 சேமி</button></div>`+lst('ex',e=>`${e.type} ${R(e.amt)}`)
+  })[c];
+};
+function yi(){ if(!$('yf'))return; const f=fm($('yf').value); $('yinf').textContent=f?('கணக்கு இருப்பு: '+balTxt(f.bal,1)):''; }
+function ci(){ if(!$('cb'))return; const b=bm($('cb').value); $('cinf').textContent=b?(' கணக்கு இருப்பு: '+balTxt(b.bal,1)):''; }
+function ykTog(){ const r=document.querySelector('[name=yk]:checked'); if(!r)return; const a=r.value=='A'; ['yv','yr'].forEach(i=>{const e=$(i);if(e)e.closest('label').style.display=a?'':'none'}); }
+document.addEventListener('change',e=>{ if(e.target.name=='yk') ykTog(); });
+function savY(w){
+  const isEdit = !!(ed && ed.old && (ed.k=='D'||ed.k=='A'));
+  if(!checkDemoLimit(isEdit)) return;
+  const f=fm($('yf').value), a=n('ya'), k=document.querySelector('[name=yk]:checked').value;
+  if(!f || a<=0) return alert('சப்ளையர் & தொகை தேவை');
+  const r={k, fid:f.id, date:$('yd').value, d:-a, amt:a, mode:$('ym').value, note:$('yn').value, id:uid()};
+  if(k=='A'){ if(f.bal>=0||!f.since) f.since=r.date; f.rate=$('yv').value=='1'?n('yr'):0; }
+  putF(r); consumeDemoSlot(isEdit); recF(f); save(); render();
+  if(w) showBillDoc(buildReceiptDoc('f', r, f, f.bal), f.ph);
+}
+function savC(w){
+  const isEdit = !!(ed && ed.old && ed.k=='C');
+  if(!checkDemoLimit(isEdit)) return;
+  const b=bm($('cb').value), a=n('ca');
+  if(!b || a<=0) return alert('வியாபாரி & தொகை தேவை');
+  const r={k:'C', bid:b.id, date:$('cd').value, d:-a, mode:$('cm').value, note:$('cn').value, id:uid()};
+  putB(r, b); consumeDemoSlot(isEdit); save(); render();
+  if(w) showBillDoc(buildReceiptDoc('b', r, b, b.bal), b.ph);
+}
+function savLb(){ const isEdit=!!(ed&&ed.arr=='lb'); if(!checkDemoLimit(isEdit))return; if(n('la')<=0)return alert('தொகை தேவை'); put('lb',{date:$('ld').value,t:$('lt').value,who:$('lw').value,amt:n('la'),note:$('ln').value}); consumeDemoSlot(isEdit); save(); render(); }
+function savEx(){ const isEdit=!!(ed&&ed.arr=='ex'); if(!checkDemoLimit(isEdit))return; if(n('xa')<=0)return alert('தொகை தேவை'); put('ex',{date:$('xd').value,type:$('xt').value,amt:n('xa'),note:$('xn').value}); consumeDemoSlot(isEdit); save(); render(); }
+
+/* ---- Masters & Ledgers ---- */
+const srt = (a,b) => a.date<b.date?-1:a.date>b.date?1:0;
+function ledger(k,p){
+  const es=(k=='f'?S.fe.filter(e=>e.fid==p.id):S.be.filter(e=>e.bid==p.id)).slice().sort(srt);
+  let run=0;
+  return es.map(e=>{ run=Math.round((run+e.d)*100)/100; return{e,run}; });
+}
+function pbRow(k,e){
+  if(k=='f'){
+    if(e.k=='P') return {det: e.pmode=='weight' ? `எடை கொள்முதல் ${e.nk} Kg @₹${e.rate}` : `கொள்முதல் ${e.g} காய் @₹${e.rate}`, amt:e.net-(e.int||0), paid:e.paid};
+    return {det:e.k=='A'?'முன்பணம்':'பாக்கி பட்டுவாடா', amt:null, paid:e.amt};
+  }
+  if(e.k=='H') return {det:'மட்டை விற்பனை '+e.pcs, amt:e.total, paid:e.recv};
+  if(e.k=='S') return {det:`விற்பனை Inv #${e.invNo||'-'}`, amt:e.total, paid:e.recv};
+  return {det:'வசூல்', amt:null, paid:Math.abs(e.d)};
+}
+function pbHead(k){ return [t('தேதி','Date'),t('விவரம்','Details'),t('தொகை','Bill Amt'),k=='f'?t('கொடுத்தது','Paid'):t('வாங்கியது','Received'),t('மீதம்','Balance')]; }
+function pbCells(k,e,run){ const r=pbRow(k,e); return [fd(e.date), r.det, r.amt==null?'-':R2(r.amt), R2(r.paid), balH(run)]; }
+
+V.l = () => {
+  const c = sb.l || 'f', k = c=='f'?'f':'b', q = (window.lq||'').toLowerCase();
+  const rows = S[k].filter(x=>(x.name+' '+(x.v||'')+' '+(x.gstin||'')).toLowerCase().includes(q));
+  return subs('l',[['f','விவசாயிகள் / சப்ளையர்கள்'],['b','வியாபாரிகள் (Buyers)']]) + `<div class="card">
+    <div class="g"><input id="lqi" placeholder="🔍 Search" value="${E(window.lq||'')}" oninput="lq=this.value;render();focusQ()"><button class="btn s o" onclick="partyModal('${k}')">+ புதிய</button></div>
+    <table style="margin-top:8px">
+      <tr><th>பெயர்</th><th>ஊர்</th><th>GSTIN</th><th>மொபைல்</th><th>மீதம்</th><th></th></tr>
+      ${rows.map(x=>`<tr style="cursor:pointer" onclick="openPB('${k}','${x.id}')"><td><b>${E(x.name)}</b></td><td>${E(x.v||'')}</td><td>${E(x.gstin||'-')}</td><td>${E(x.ph||'')}</td><td>${balH(x.bal)}</td><td><button class="btn s" onclick="event.stopPropagation();partyModal('${k}','${x.id}')">✏️</button></td></tr>`).join('')||'<tr><td colspan="6">—</td></tr>'}
+    </table>
+  </div>`;
+};
+function focusQ(){ const i=$('lqi'); if(i){ i.focus(); i.setSelectionRange(1e3,1e3); } }
+
+function closePB(){ document.querySelectorAll('#pbm').forEach(x=>x.remove()); }
+function openPB(k,id){
+  const p = k=='f'?fm(id):bm(id); if(!p) return;
+  window.lsel = id; closePB();
+  const lg = ledger(k,p).slice().reverse();
+  const m = document.createElement('div');
+  m.id = 'pbm';
+  m.style.cssText = 'position:fixed;inset:0;background:#000a;z-index:19;padding:10px;display:flex;align-items:center;justify-content:center';
+  m.innerHTML = `<div class="card" style="max-width:780px;width:100%;max-height:92vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:10px 12px;border-bottom:1px solid var(--bd)">
+      <div><h3 style="margin:0">${E(p.name)} - Passbook</h3><div class="k">${p.addr?E(p.addr)+' · ':''}${p.gstin?'GSTIN: '+E(p.gstin)+' · ':''}மீதம்: <b>${balH(p.bal)}</b></div></div>
+      <button class="btn s x" onclick="closePB()">✖️ மூடு</button>
+    </div>
+    <div style="overflow:auto;flex:1;padding:8px">
+      <table>
+        <tr>${pbHead(k).map(x=>`<th>${x}</th>`).join('')}<th>பில்</th></tr>
+        ${lg.map(({e,run})=>`<tr>${pbCells(k,e,run).map(x=>`<td>${x}</td>`).join('')}<td><button class="btn s o" onclick="closePB();openEntryBill('${k}','${p.id}','${e.id}')">📄 A4</button><button class="btn s x" onclick="closePB();del('${k}','${e.id}')">🗑️</button></td></tr>`).join('')||'<tr><td colspan="6">—</td></tr>'}
+      </table>
+    </div>
+  </div>`;
+  document.body.appendChild(m);
+}
+
+function partyModal(k,id){
+  const p = id ? (k=='f'?fm(id):bm(id)) : null;
+  document.querySelectorAll('#ptm').forEach(x=>x.remove());
+  const m = document.createElement('div');
+  m.id = 'ptm';
+  m.style.cssText = 'position:fixed;inset:0;background:#000a;z-index:20;padding:16px;display:flex;align-items:center;justify-content:center';
+  m.innerHTML = `<div class="card" style="max-width:480px;width:100%;max-height:90vh;overflow:auto">
+    <h3>${p?'✏️ திருத்து':'+ புதிய'} ${k=='f'?'விவசாயி / சப்ளையர்':'வியாபாரி (Buyer)'}</h3>
+    <div class="g">
+      <label>முன்பெயர்<select id="ptx"><option value="">— (நிறுவனப் பெயர் / இல்லை)</option><option value="திரு.">திரு.</option><option value="திருமதி.">திருமதி.</option></select></label>
+      <label>பெயர் / நிறுவனப் பெயர் *<input id="ptn"></label>
+    </div>
+    <div class="g">
+      <label>ஊர்<input id="ptv"></label>
+      <label>மொபைல் எண்<input id="ptp" type="tel" inputmode="numeric"></label>
+    </div>
+    <label>முகவரி (A4 பில்லுக்கு)<input id="pta" placeholder="Street, Area, District"></label>
+    <div class="g">
+      <label>GSTIN (Optional)<input id="ptg" placeholder="33XXXXX0000X1Z5"></label>
+      <label>State<input id="pts" value="33-Tamil Nadu"></label>
+    </div>
+    <div style="margin-top:10px">
+      <button class="btn" onclick="saveParty('${k}','${id||''}')">💾 சேமி</button>
+      <button class="btn x" onclick="document.getElementById('ptm').remove()">ரத்து</button>
+    </div>
+  </div>`;
+  document.body.appendChild(m);
+  if(p){
+    const pm = String(p.name).match(/^(திருமதி|திரு)(\.\s*|\s+)/);
+    $('ptx').value = pm ? pm[1]+'.' : '';
+    $('ptn').value = pm ? String(p.name).slice(pm[0].length) : p.name;
+    $('ptv').value = p.v || '';
+    $('ptp').value = p.ph || '';
+    $('pta').value = p.addr || '';
+    $('ptg').value = p.gstin || '';
+    $('pts').value = p.state || '33-Tamil Nadu';
+  }
+}
+
+function saveParty(k,id){
+  const pfx = $('ptx').value, typed = $('ptn').value.trim();
+  const raw = typed.replace(/^(திருமதி|திரு)(\.\s*|\s+)/,'').trim();
+  const name = pfx ? (raw ? pfx+' '+raw : '') : typed;
+  if(!name) return alert('பெயர் தேவை');
+  let p = id ? (k=='f'?fm(id):bm(id)) : null;
+  if(!p){ p = {id:uid(), name, v:'', ph:'', addr:'', gstin:'', state:'33-Tamil Nadu', bal:0, cycle:55}; S[k].push(p); }
+  p.name = name;
+  if(pfx) delete p.np; else p.np = 1;
+  p.v = $('ptv').value.trim();
+  p.ph = $('ptp').value.trim();
+  p.addr = $('pta').value.trim();
+  p.gstin = $('ptg').value.trim().toUpperCase();
+  p.state = $('pts').value.trim() || '33-Tamil Nadu';
+  save();
+  document.getElementById('ptm').remove();
+  render();
+  if(!id){
+    if(k=='f' && $('pf0')){ $('pf0').value=p.id; calcP('f'); }
+    if(k=='f' && $('pw_f')){ $('pw_f').value=p.id; calcPW(); }
+    if(k=='b' && $('sb')){ $('sb').value=p.id; calcS(); }
+  }
+}
+
+/* ---- Reports & P&L ---- */
+function plCalc(inR){
+  const sales = S.be.filter(e=>e.k=='S'&&inR(e.date));
+  const pcs = sales.reduce((a,e)=>a+e.rows.reduce((s,x)=>s+(x.pcs||0),0),0);
+  const A1 = sales.reduce((a,e)=>a+e.total,0);
+  const A2 = S.hk.filter(e=>inR(e.date)).reduce((a,e)=>a+e.tot,0);
+  const A3 = S.fe.filter(e=>e.k=='P'&&inR(e.date)).reduce((a,e)=>a+(e.int||0),0);
+  const purch = S.fe.filter(e=>e.k=='P'&&inR(e.date)).reduce((a,e)=>a+e.amt,0);
+  const B2 = S.dh.filter(e=>inR(e.date)).reduce((a,e)=>a+e.cost,0);
+  const B3 = S.ex.filter(e=>inR(e.date)).reduce((a,e)=>a+e.amt,0);
+  return {pcs, A1, A2, A3, purch, B2, B3, net: A1+A2+A3-purch-B2-B3};
+}
+
+V.r = () => {
+  const c = sb.r || 'pl', inR = () => true;
+  let h = subs('r',[['pl','P&L'],['g','ரகம் வாரியாக'],['py','சப்ளையர் பாக்கி'],['rc','வியாபாரி பாக்கி'],['db','Day Book']])
+    + `<div style="margin-bottom:10px"><button class="btn s" onclick="window.print()">🖨️ Print அறிக்கை</button><button class="btn s x" onclick="demoLockedFeature('CSV / Excel Export')">📊 Excel / CSV 🔒</button></div>`;
+  const sales = S.be.filter(e=>e.k=='S');
+  const T = a => `<div class="card"><table>${a}</table></div>`;
+  if(c=='pl'){
+    const p = plCalc(inR);
+    h += T(`<tr><th>வருமானம் (A)</th><td></td></tr><tr><td>தேங்காய் விற்பனை</td><td>${R2(p.A1)}</td></tr><tr><td>மட்டை விற்பனை</td><td>${R2(p.A2)}</td></tr><tr><td>வட்டி வருமானம்</td><td>${R2(p.A3)}</td></tr><tr><th>கொள்முதல் & செலவு (B)</th><td></td></tr><tr><td>மொத்த கொள்முதல்</td><td>${R2(p.purch)}</td></tr><tr><td>உரியல் செலவு</td><td>${R2(p.B2)}</td></tr><tr><td>இதர செலவுகள்</td><td>${R2(p.B3)}</td></tr><tr><th>நிகர வித்தியாசம்</th><th class="${p.net<0?'red':'grn'}">${R2(p.net)}</th></tr>`);
+  }
+  if(c=='g') h += T('<tr><th>ரகம்</th><th>Gross Kg</th><th>கழிவு Kg</th><th>Net Kg</th><th>தொகை</th></tr>'+GR.map(g=>{let gk=0,dk=0,nk=0,t=0;sales.forEach(e=>e.rows.filter(x=>x.g==g[0]).forEach(x=>{gk+=x.gk;dk+=x.dk;nk+=x.nk;t+=x.tot}));return`<tr><td>${g[1]}</td><td>${gk.toFixed(1)}</td><td>${dk.toFixed(1)}</td><td>${nk.toFixed(1)}</td><td>${R2(t)}</td></tr>`}).join(''));
+  if(c=='py') h += T('<tr><th>சப்ளையர்</th><th>ஊர்</th><th>பாக்கி</th></tr>'+S.f.filter(f=>f.bal>0).map(f=>`<tr><td>${E(f.name)}</td><td>${E(f.v)}</td><td>${R2(f.bal)}</td></tr>`).join(''));
+  if(c=='rc') h += T('<tr><th>வியாபாரி</th><th>ஊர்</th><th>பாக்கி</th></tr>'+S.b.filter(b=>b.bal>0).map(b=>`<tr><td>${E(b.name)}</td><td>${E(b.v)}</td><td>${R2(b.bal)}</td></tr>`).join(''));
+  if(c=='db'){
+    const fl=flows(), dt=window.dbd||td(), op=fl.filter(x=>x[0]<dt).reduce((a,x)=>a+x[2],0), day=fl.filter(x=>x[0]==dt);
+    h += `<div class="card"><label>தேதி ${fd(dt)}<input type="date" value="${dt}" oninput="dbd=this.value;render()"></label><table><tr><td>ஆரம்ப இருப்பு</td><td>${R2(op)}</td></tr>${day.map(x=>`<tr><td>${E(x[1])}</td><td class="${x[2]<0?'red':'grn'}">${R2(x[2])}</td></tr>`).join('')}<tr><th>இறுதி ரொக்க இருப்பு</th><th>${R2(op+day.reduce((a,x)=>a+x[2],0))}</th></tr></table></div>`;
+  }
+  return h;
+};
+
+/* ---- Recent Activity & CRUD helpers ---- */
+function recentActivityCard(){
+  const P = S.fe.filter(e=>e.k=='P').slice(-5).reverse();
+  const Sl = S.be.filter(e=>e.k=='S').slice(-5).reverse();
+  const pr = P.map(e=>{const f=fm(e.fid);return `<tr style="cursor:pointer" onclick="openPB('f','${e.fid}')"><td>${fd(e.date)}</td><td>${E(f?f.name:'—')}</td><td>${e.pmode=='weight'?(e.nk+' Kg (Weight)'):(e.g+' காய் (Count)')}</td><td>${R2(e.net)}</td><td><button class="btn s o" onclick="event.stopPropagation();openEntryBill('f','${e.fid}','${e.id}')">📄 A4</button></td></tr>`}).join('')||'<tr><td colspan="5">பதிவு இல்லை</td></tr>';
+  const sr = Sl.map(e=>{const b=bm(e.bid);return `<tr style="cursor:pointer" onclick="openPB('b','${e.bid}')"><td>${fd(e.date)}</td><td>Inv #${E(e.invNo||'-')}</td><td>${E(b?b.name:'—')}</td><td>${R2(e.total)}</td><td><button class="btn s o" onclick="event.stopPropagation();openEntryBill('b','${e.bid}','${e.id}')">📄 A4</button></td></tr>`}).join('')||'<tr><td colspan="5">பதிவு இல்லை</td></tr>';
+  return `<div class="card"><h3>சமீபத்திய விற்பனை (A4 Bills)</h3><table><tr><th>தேதி</th><th>Inv No</th><th>வியாபாரி</th><th>தொகை</th><th>பில்</th></tr>${sr}</table></div>
+          <div class="card"><h3>சமீபத்திய கொள்முதல் (Count & Weight)</h3><table><tr><th>தேதி</th><th>சப்ளையர்</th><th>அளவு</th><th>நிகரம்</th><th>பில்</th></tr>${pr}</table></div>`;
+}
+function lst(a,f,p){
+  const r=S[a].map((e,i)=>[e,i]).filter(x=>!p||p(x[0])).slice(-10).reverse();
+  return `<div class="card"><h3>பதிவுகள்</h3><table>${r.map(([e,i])=>`<tr><td>${fd(e.date)}</td><td>${f(e)}</td><td><button class="btn s x" onclick="dg('${a}',${i})">🗑️</button></td></tr>`).join('')||'<tr><td>பதிவு இல்லை</td></tr>'}</table></div>`;
+}
+function putF(r){ if(ed&&ed.old){r.id=ed.old.id;const i=S.fe.findIndex(x=>x.id==r.id);if(i>=0){S.fe[i]=r;ed=null;return}} ed=null; S.fe.push(r); }
+function putB(r,b){ if(ed&&ed.old){r.id=ed.old.id;const i=S.be.findIndex(x=>x.id==r.id);if(i>=0){S.be[i]=r;ed=null;recB(b);return}} ed=null; S.be.push(r); recB(b); }
+function put(a,r){ if(ed&&ed.arr==a&&ed.i>=0){r.id=S[a][ed.i].id;S[a][ed.i]=r}else{r.id=r.id||uid();S[a].push(r)} ed=null; }
+function del(k,id){
+  if(!confirm('நீக்கவா?')) return;
+  if(k=='f'){ const e=S.fe.find(x=>x.id==id); S.fe=S.fe.filter(x=>x.id!=id); if(e) recF(fm(e.fid)); }
+  else { const e=S.be.find(x=>x.id==id); S.be=S.be.filter(x=>x.id!=id); if(e) recB(bm(e.bid)); }
+  save(); render();
+}
+function dg(a,i){ if(!confirm('நீக்கவா?')) return; S[a].splice(i,1); save(); render(); }
+function qf(inp,id,k){
+  const q=inp.value.toLowerCase(), s=$(id), c=s.value;
+  s.innerHTML = opt(S[k].filter(x=>(x.name+' '+(x.v||'')+' '+(x.ph||'')).toLowerCase().includes(q)));
+  if([...s.options].some(o=>o.value==c)) s.value=c;
+  if(s.value!=c) s.dispatchEvent(new Event('change'));
+}
+
+/* ============================================================================
+   A4 TAX INVOICE + THERMAL + CANVAS PNG/PDF + WHATSAPP ENGINE
+   ============================================================================ */
+function buildSalesDoc(r, b, cl){
+  const prev = pvOf(r, cl);
+  const cols = ['#','Item Name','HSN/SAC','Pcs','Gross Wt (Kg)','Deduction (Kg / %)','Net Wt (Kg)','Rate/Kg (₹)','Amount (₹)'];
+  const rows = r.rows.map((x, idx) => [
+    String(idx+1),
+    x.itemName || (GR.find(g=>g[0]==x.g)||['',x.g])[1],
+    x.hsn || DEMO_CFG.company.defaultHsn,
+    x.pcs ? x.pcs.toLocaleString('en-IN') : '-',
+    x.gk.toLocaleString('en-IN',{maximumFractionDigits:2}),
+    x.dk > 0 ? `${x.dk.toLocaleString('en-IN',{maximumFractionDigits:2})} (${x.dp||0}%)` : '0',
+    x.nk.toLocaleString('en-IN',{maximumFractionDigits:2}),
+    Number(x.rate).toFixed(2),
+    Number(x.tot).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})
+  ]);
+  const totGk = r.rows.reduce((a,x)=>a+x.gk,0);
+  const totDk = r.rows.reduce((a,x)=>a+x.dk,0);
+  const totNk = r.rows.reduce((a,x)=>a+x.nk,0);
+  const totPcs = r.rows.reduce((a,x)=>a+(x.pcs||0),0);
+  const totalRow = ['', 'Total', '', totPcs?totPcs.toLocaleString('en-IN'):'-', totGk.toLocaleString('en-IN',{maximumFractionDigits:2}), totDk.toLocaleString('en-IN',{maximumFractionDigits:2}), totNk.toLocaleString('en-IN',{maximumFractionDigits:2}), '', R2(r.total)];
+  const summary = [
+    ['Sub Total', R2(r.total)],
+    ...(prev!==0 ? [[prev>0?'Previous Balance (பழைய பாக்கி)':'Previous Advance (பழைய முன்பணம்)', R2(Math.abs(prev))]] : []),
+    ['Bill Total (இன்றைய பில்)', R2(r.total), true],
+    ['Received (வாங்கிய தொகை)', R2(r.recv)],
+    [cl>0?'Balance Due (புதிய பாக்கி)':cl<0?'Advance Balance (முன்பண இருப்பு)':'Closing Balance', cl===0?'₹0.00 (நேர்)':R2(Math.abs(cl)), true]
+  ];
+  return {
+    type:'TAX INVOICE', invNo: r.invNo || '-', date: fd(r.date), pos: r.pos || '33-Tamil Nadu', veh: r.veh || '',
+    partyLabel:'Bill To (வியாபாரி)', partyName: pName(b.name, b.np), partyAddr: b.addr || b.v || '', partyPh: b.ph || '', partyGstin: b.gstin || '', partyState: b.state || '33-Tamil Nadu',
+    cols, rows, totalRow, summary, grandTotal: r.total, note: r.note || ''
+  };
+}
+
+function buildPurchaseDoc(r, f, cl){
+  const prev = pvOf(r, cl);
+  if(r.pmode === 'weight'){
+    const gName = (GR.find(g=>g[0]==r.grade)||['','COCONUT FRESH'])[1];
+    const cols = ['#','Item Name','HSN/SAC','Pcs','Gross Wt (Kg)','Deduction (Kg / %)','Net Wt (Kg)','Rate/Kg (₹)','Amount (₹)'];
+    const rows = [['1', gName, r.hsn||'08011210', r.g?r.g.toLocaleString('en-IN'):'-', r.gk.toLocaleString('en-IN'), `${r.dk} (${r.dp||0}%)`, r.nk.toLocaleString('en-IN'), Number(r.rate).toFixed(2), Number(r.amt).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})]];
+    const totalRow = ['','Total','', r.g?r.g.toLocaleString('en-IN'):'-', r.gk.toLocaleString('en-IN'), String(r.dk), r.nk.toLocaleString('en-IN'), '', R2(r.amt)];
+    const summary = [
+      ['Sub Total', R2(r.amt)],
+      ...(r.cut>0?[['Deduction / Cutting / Freight', '- '+R2(r.cut)]]:[]),
+      ['Net Bill Amount', R2(r.net), true],
+      ...(prev!==0?[[prev>0?'Old Payable':'Old Advance', R2(Math.abs(prev))]]:[]),
+      ['Paid Now (கொடுத்தது)', R2(r.paid)],
+      [cl>0?'Payable Balance (பாக்கி)':cl<0?'Advance Balance':'Closing Balance', cl===0?'₹0.00 (நேர்)':R2(Math.abs(cl)), true]
+    ];
+    return {
+      type:'PURCHASE BILL (WEIGHT)', invNo:r.invNo||'-', date:fd(r.date), pos:'33-Tamil Nadu', veh:'',
+      partyLabel:'Supplier / Mandi (சப்ளையர்)', partyName:pName(f.name,f.np), partyAddr:f.addr||f.v||'', partyPh:f.ph||'', partyGstin:f.gstin||'', partyState:f.state||'33-Tamil Nadu',
+      cols, rows, totalRow, summary, grandTotal:r.net, note:r.note||''
+    };
+  }
+  const cols = ['#','Item / Details','Gross Pcs','இலாபக் காய்','Bill Pcs','Rate/Pc (₹)','Amount (₹)'];
+  const rows = [['1','தேங்காய் கொள்முதல் (Count-Based)', r.g.toLocaleString('en-IN'), `${r.ded} (${r.pp}%)`, r.bill.toLocaleString('en-IN'), Number(r.rate).toFixed(2), Number(r.amt).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})]];
+  const totalRow = ['','Total', r.g.toLocaleString('en-IN'), String(r.ded), r.bill.toLocaleString('en-IN'), '', R2(r.amt)];
+  const summary = [
+    ['Coconut Amount', R2(r.amt)],
+    ...(r.cut>0?[['வெட்டுக் கூலி', '- '+R2(r.cut)]]:[]),
+    ['Net Bill Amount', R2(r.net), true],
+    ...(prev!==0?[[prev>0?'பழைய பாக்கி':'பழைய முன்பணம்', R2(Math.abs(prev))]]:[]),
+    ...(r.int>0?[['வட்டி கழிப்பு', '- '+R2(r.int)]]:[]),
+    ...(r.pr>0?[['அசல் கழிப்பு', '- '+R2(r.pr)]]:[]),
+    ['Paid Now (கொடுத்தது)', R2(r.paid)],
+    [cl>0?'பாக்கி (கொடுக்க வேண்டியது)':cl<0?'முன்பண இருப்பு':'கணக்கு இருப்பு', cl===0?'₹0.00 (நேர்)':R2(Math.abs(cl)), true]
+  ];
+  return {
+    type:'PURCHASE BILL (COUNT)', invNo:r.invNo||'-', date:fd(r.date), pos:'33-Tamil Nadu', veh:'',
+    partyLabel:'Farmer / Supplier (விவசாயி)', partyName:pName(f.name,f.np), partyAddr:f.addr||f.v||'', partyPh:f.ph||'', partyGstin:f.gstin||'', partyState:f.state||'33-Tamil Nadu',
+    cols, rows, totalRow, summary, grandTotal:r.net, note:r.note||''
+  };
+}
+
+function buildHuskDoc(r, b, cl){
+  return {
+    type:'HUSK SALES BILL', invNo:'HK-'+String(r.id).slice(-4), date:fd(r.date), pos:'33-Tamil Nadu', veh:'',
+    partyLabel:'Buyer (வாங்குபவர்)', partyName:pName(r.who, b&&b.np), partyAddr:b?(b.addr||b.v||''):'', partyPh:b?b.ph:'', partyGstin:b?b.gstin:'', partyState:'33-Tamil Nadu',
+    cols:['#','Item','Quantity','Unit','Rate (₹)','Amount (₹)'],
+    rows:[['1','தேங்காய் மட்டை (Coconut Husk)', r.pcs.toLocaleString('en-IN'), 'Pcs', Number(r.rate).toFixed(2), Number(r.tot).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})]],
+    totalRow:['','Total', r.pcs.toLocaleString('en-IN'), '', '', R2(r.tot)],
+    summary:[['Bill Total', R2(r.tot), true],['Received', R2(r.recv)],['Closing Balance', balTxt(cl)]],
+    grandTotal:r.tot, note:''
+  };
+}
+
+function buildReceiptDoc(k, r, p, cl){
+  const amt = Math.abs(r.d), pv = pvOf(r, cl);
+  const label = r.k=='D'?'பாக்கி பட்டுவாடா (Payment)':r.k=='A'?'முன்பணம் (Advance)':'வசூல் (Receipt)';
+  return {
+    type:'PAYMENT / RECEIPT VOUCHER', invNo:'RC-'+String(r.id).slice(-4), date:fd(r.date), pos:'33-Tamil Nadu', veh:'',
+    partyLabel: k=='f'?'Paid To (விவசாயி / சப்ளையர்)':'Received From (வியாபாரி)', partyName:pName(p.name,p.np), partyAddr:p.addr||p.v||'', partyPh:p.ph||'', partyGstin:p.gstin||'', partyState:p.state||'33-Tamil Nadu',
+    cols:['#','Description','Mode','Amount (₹)'],
+    rows:[['1', label + (r.note?' - '+r.note:''), r.mode||'Cash', Number(amt).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})]],
+    totalRow:['','Total','', R2(amt)],
+    summary:[
+      ...(pv!==0?[['Previous Balance', balTxt(pv)]]:[]),
+      [label, R2(amt), true],
+      ['Closing Balance', balTxt(cl), true]
+    ],
+    grandTotal:amt, note:r.note||''
+  };
+}
+
+function openEntryBill(k, pid, eid){
+  const p = k=='f'?fm(pid):bm(pid); if(!p) return;
+  const x = ledger(k,p).find(z=>z.e.id==eid); if(!x) return;
+  const e = x.e, run = x.run;
+  if(e.k=='S') return showBillDoc(buildSalesDoc(e, p, run), p.ph);
+  if(e.k=='P') return showBillDoc(buildPurchaseDoc(e, p, run), p.ph);
+  if(e.k=='H'){
+    const hk = S.hk.find(h=>h.id==e.hk) || {id:e.id, date:e.date, who:p.name, pcs:e.pcs, rate:e.pcs?e.total/e.pcs:1, tot:e.total, recv:e.recv};
+    return showBillDoc(buildHuskDoc(hk, p, run), p.ph);
+  }
+  return showBillDoc(buildReceiptDoc(k, e, p, run), p.ph);
+}
+
+function openSampleA4(){
+  const e = S.be.find(x=>x.k=='S') || makeSeedState().be[0];
+  const b = bm(e.bid) || makeSeedState().b[0];
+  const lg = ledger('b', b).find(z=>z.e.id==e.id);
+  showBillDoc(buildSalesDoc(e, b, lg ? lg.run : e.d), b.ph);
+}
+
+/* Render A4 HTML matching attached Vyapar Tax Invoice layout + Explicit Weight Deduction + Watermark */
+function renderA4HTML(doc){
+  const C = DEMO_CFG.company;
+  const wm = `<div class="wm"><span>${DEMO_CFG.watermarkText}</span><span>${DEMO_CFG.watermarkText}</span><span>${DEMO_CFG.watermarkText}</span></div>`;
+  const ths = doc.cols.map((c,i)=>`<th class="${i>=3?'num':''}">${E(c)}</th>`).join('');
+  const trs = doc.rows.map(r=>`<tr>${r.map((cell,i)=>`<td class="${i===0?'ctr':i>=3?'num':''}">${E(cell)}</td>`).join('')}</tr>`).join('');
+  const tfoot = `<tr class="totrow">${doc.totalRow.map((cell,i)=>`<td class="${i>=3?'num':''}">${E(cell)}</td>`).join('')}</tr>`;
+  const sums = doc.summary.map(([l,v,hi])=>`<tr class="${hi?'hi':''}"><td>${E(l)}</td><td>${E(v)}</td></tr>`).join('');
+  return `<div id="bmA4">${wm}<div class="a4c">
+    <div class="a4title">${E(doc.type)} <span style="font-size:11px;color:#b91c1c;border:1px solid #b91c1c;padding:1px 6px;border-radius:4px;margin-left:6px">DEMO SAMPLE</span></div>
+    <div class="a4hdr">
+      <div class="a4co">
+        <h2><span class="bico">${LOGO_SVG}</span> ${E(C.name)}</h2>
+        <p>${E(C.address)}</p>
+        <p><b>Phone:</b> ${E(C.phone)} &nbsp;|&nbsp; <b>Email:</b> ${E(C.email)}</p>
+        <p><b>GSTIN:</b> ${E(C.gstin)} &nbsp;|&nbsp; <b>State:</b> ${E(C.state)}</p>
+      </div>
+      <div class="a4meta">
+        <p><b>Invoice No:</b> ${E(doc.invNo)}</p>
+        <p><b>Date:</b> ${E(doc.date)}</p>
+        <p><b>Place of Supply:</b> ${E(doc.pos)}</p>
+        ${doc.veh ? `<p><b>Vehicle No:</b> ${E(doc.veh)}</p>` : ''}
+      </div>
+    </div>
+    <div class="a4party">
+      <div>
+        <b class="lb">${E(doc.partyLabel)}</b>
+        <div style="font-size:14px;font-weight:700">${E(doc.partyName)}</div>
+        ${doc.partyAddr?`<div>${E(doc.partyAddr)}</div>`:''}
+        ${doc.partyPh?`<div>Contact No: ${E(doc.partyPh)}</div>`:''}
+      </div>
+      <div>
+        <b class="lb">Tax & State Details</b>
+        <div><b>GSTIN:</b> ${E(doc.partyGstin || 'Unregistered / N/A')}</div>
+        <div><b>State:</b> ${E(doc.partyState || '33-Tamil Nadu')}</div>
+        ${doc.note?`<div style="margin-top:4px"><b>Note:</b> ${E(doc.note)}</div>`:''}
+      </div>
+    </div>
+    <table class="a4tbl">
+      <thead><tr>${ths}</tr></thead>
+      <tbody>${trs}${tfoot}</tbody>
+    </table>
+    <div class="a4bot">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="a4box">
+          <h4>Invoice Amount In Words</h4>
+          <div><b>${E(amountInWords(doc.grandTotal))}</b></div>
+        </div>
+        <div class="a4box">
+          <h4>Bank Details (Demo)</h4>
+          <div><b>Bank:</b> ${E(C.bankName)}</div>
+          <div><b>Account No:</b> ${E(C.accNo)} &nbsp;|&nbsp; <b>IFSC:</b> ${E(C.ifsc)}</div>
+          <div><b>Account Holder:</b> ${E(C.accHolder)}</div>
+          <div><b>UPI ID:</b> ${E(C.upiId)}</div>
+        </div>
+      </div>
+      <div>
+        <table class="a4sum">${sums}</table>
+      </div>
+    </div>
+    <div class="a4sign">
+      <div style="font-size:11px;color:#555;max-width:58%">
+        <b>Terms & Conditions:</b><br>
+        1. Goods weight & deduction verified at dispatch.<br>
+        2. This is a Restricted Demo sample generated for preview only.
+      </div>
+      <div class="sigbox">
+        <div style="font-weight:700;margin-bottom:36px">For ${E(C.name)}</div>
+        <div style="border-top:1px solid #333;padding-top:3px;font-size:11.5px">Authorized Signatory</div>
+      </div>
+    </div>
+    <div class="a4foot">Software Demo by <b>${E(DEMO_CFG.devName)}</b> · ${E(DEMO_CFG.devTitle)} · 📞 ${E(DEMO_CFG.devPhoneShow)}</div>
+  </div></div>`;
+}
+
+function renderThermalHTML(doc){
+  const C = DEMO_CFG.company;
+  const rowsHtml = doc.rows.map((r,i)=>`<div class="ts">${i+1}) ${E(r[1])}</div>` + doc.cols.slice(2).map((col,ci)=>`<div class="tr"><span>${E(col)}:</span><span class="tv">${E(r[ci+2])}</span></div>`).join('')).join('<div class="td"></div>');
+  const sumHtml = doc.summary.map(([l,v,hi])=>`<div class="tr${hi?' tk':''}"><span>${E(l)}:</span><span class="tv">${E(v)}</span></div>`).join('');
+  return `<div class="rh">${E(C.name)}<small>${E(C.place)} · ${E(C.phone)}</small><small>GSTIN: ${E(C.gstin)}</small></div>
+    <div class="twm">DEMO SAMPLE — NOT OFFICIAL</div>
+    <div class="tr"><span>${E(doc.type)}:</span><span class="tv">#${E(doc.invNo)}</span></div>
+    <div class="tr"><span>Date:</span><span class="tv">${E(doc.date)}</span></div>
+    <div class="tr"><span>Party:</span><span class="tv">${E(doc.partyName)}</span></div>
+    <div class="td"></div>${rowsHtml}<div class="td"></div>${sumHtml}
+    <div class="rf">Demo by ${E(DEMO_CFG.devName)} · ${E(DEMO_CFG.devPhoneShow)}</div>`;
+}
+
+function fmtWADoc(doc){
+  const C = DEMO_CFG.company;
+  const lines = [
+    `🥥 *${C.name}* (DEMO)`,
+    `📍 ${C.place} | 📱 ${C.phone}`,
+    `━━━━━━━━━━━━━━━━━━━━`,
+    `*${doc.type}* · #${doc.invNo}`,
+    `📅 தேதி: *${doc.date}*`,
+    `👤 ${doc.partyLabel}: *${doc.partyName}*`,
+    ...(doc.partyGstin?[`🧾 GSTIN: ${doc.partyGstin}`]:[]),
+    `────────────────────`
+  ];
+  doc.rows.forEach((r,i)=>{
+    lines.push(`*${i+1}) ${r[1]}*`);
+    doc.cols.slice(2).forEach((col,ci)=> lines.push(`${col}: ${r[ci+2]}`));
+    lines.push('');
+  });
+  lines.push(`────────────────────`);
+  doc.summary.forEach(([l,v,hi])=> lines.push(hi ? `💰 *${l}: ${v}*` : `${l}: ${v}`));
+  lines.push(`━━━━━━━━━━━━━━━━━━━━`, `⚠️ _DEMO SAMPLE — NOT FOR OFFICIAL BILLING_`, `Software Demo by *${DEMO_CFG.devName}* · 📞 ${DEMO_CFG.devPhoneShow}`);
+  return lines.join('\n');
+}
+
+/* ---- Native High-Res A4 Canvas -> PNG & True A4 PDF (Offline, No External Lib) ---- */
+const A4_FONT = "'Inter','Noto Sans Tamil','Latha','Nirmala UI',system-ui,sans-serif";
+async function renderA4Canvas(doc){
+  try{ if(document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, new Promise(r=>setTimeout(r,1000))]); }catch(e){}
+  const W = 1240, H = 1754, M_ = 54, IW = W - 2*M_;
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const cx = cv.getContext('2d');
+  cx.fillStyle = '#fff'; cx.fillRect(0,0,W,H);
+
+  // Outer border
+  cx.strokeStyle = '#111'; cx.lineWidth = 2; cx.strokeRect(M_, M_, IW, H - 2*M_);
+
+  // Diagonal Watermark (Drawn behind content)
+  cx.save();
+  cx.fillStyle = 'rgba(220,38,38,0.11)';
+  cx.font = '700 44px ' + A4_FONT;
+  cx.textAlign = 'center'; cx.textBaseline = 'middle';
+  [480, 920, 1360].forEach(wy => {
+    cx.save(); cx.translate(W/2, wy); cx.rotate(-0.52);
+    cx.fillText(DEMO_CFG.watermarkText, 0, 0);
+    cx.restore();
+  });
+  cx.restore();
+
+  const C = DEMO_CFG.company;
+  const txt = (s,x,y,sz,b,al,col) => {
+    cx.fillStyle = col || '#111'; cx.font = (b?'700 ':'400 ') + sz + 'px ' + A4_FONT;
+    cx.textAlign = al || 'left'; cx.textBaseline = 'top';
+    cx.fillText(String(s||''), x, y);
+  };
+  const wrap = (s, maxW, sz, b) => {
+    cx.font = (b?'700 ':'400 ') + sz + 'px ' + A4_FONT;
+    const words = String(s||'').split(/\s+/), out = []; let cur = '';
+    words.forEach(w => {
+      const t_ = cur ? cur+' '+w : w;
+      if(cx.measureText(t_).width <= maxW) cur = t_;
+      else { if(cur) out.push(cur); cur = w; }
+    });
+    if(cur) out.push(cur);
+    return out;
+  };
+  const box = (x,y,w,h,fill) => {
+    if(fill){ cx.fillStyle = fill; cx.fillRect(x,y,w,h); }
+    cx.strokeStyle = '#333'; cx.lineWidth = 1.4; cx.strokeRect(x,y,w,h);
+  };
+
+  let y = M_ + 22;
+  // Title
+  txt(doc.type + '  [DEMO SAMPLE]', W/2, y, 26, 1, 'center', '#1B4332');
+  y += 38;
+  cx.strokeStyle = '#1B4332'; cx.lineWidth = 3;
+  cx.beginPath(); cx.moveTo(M_+18, y); cx.lineTo(W-M_-18, y); cx.stroke();
+  y += 16;
+
+  // Company + Invoice Meta Box
+  const bxX = M_ + 18, bxW = IW - 36;
+  box(bxX, y, bxW, 138);
+  txt(C.name, bxX+16, y+14, 26, 1, 'left', '#1B4332');
+  txt(C.address, bxX+16, y+48, 17, 0);
+  txt(`Phone: ${C.phone}   |   Email: ${C.email}`, bxX+16, y+76, 17, 0);
+  txt(`GSTIN: ${C.gstin}   |   State: ${C.state}`, bxX+16, y+104, 17, 1);
+
+  txt(`Invoice No: ${doc.invNo}`, bxX+bxW-16, y+18, 18, 1, 'right');
+  txt(`Date: ${doc.date}`, bxX+bxW-16, y+46, 18, 0, 'right');
+  txt(`Place of Supply: ${doc.pos}`, bxX+bxW-16, y+74, 17, 0, 'right');
+  if(doc.veh) txt(`Vehicle No: ${doc.veh}`, bxX+bxW-16, y+102, 17, 0, 'right');
+  y += 154;
+
+  // Bill To Box
+  box(bxX, y, bxW, 118, '#fafaf9');
+  txt(doc.partyLabel.toUpperCase(), bxX+16, y+12, 15, 1, 'left', '#1B4332');
+  txt(doc.partyName, bxX+16, y+34, 21, 1);
+  if(doc.partyAddr) txt(doc.partyAddr, bxX+16, y+64, 16, 0);
+  if(doc.partyPh) txt('Contact No: '+doc.partyPh, bxX+16, y+88, 16, 0);
+
+  const midX = bxX + bxW*0.58;
+  txt('GSTIN: ' + (doc.partyGstin || 'Unregistered / N/A'), midX, y+34, 17, 1);
+  txt('State: ' + (doc.partyState || '33-Tamil Nadu'), midX, y+62, 17, 0);
+  if(doc.note) txt('Note: ' + doc.note.slice(0,42), midX, y+88, 15, 0, 'left', '#444');
+  y += 136;
+
+  // Item Table
+  const nc = doc.cols.length;
+  const colW = nc===9 ? [42,248,96,76,112,138,108,104,172] : nc===7 ? [46,320,120,130,120,130,230] : Array(nc).fill(Math.floor(bxW/nc));
+  const sumW = colW.reduce((a,b)=>a+b,0);
+  const scale = bxW / sumW;
+  const cw = colW.map(w => w * scale);
+
+  // Header row
+  const hh = 46;
+  box(bxX, y, bxW, hh, '#1B4332');
+  let cxX = bxX;
+  doc.cols.forEach((col, i) => {
+    if(i>0){ cx.strokeStyle='#fff'; cx.lineWidth=1; cx.beginPath(); cx.moveTo(cxX,y); cx.lineTo(cxX,y+hh); cx.stroke(); }
+    const ls = wrap(col, cw[i]-10, 15, 1);
+    ls.slice(0,2).forEach((ln,li) => txt(ln, cxX + cw[i]/2, y + (ls.length>1?6:14) + li*18, 15, 1, 'center', '#fff'));
+    cxX += cw[i];
+  });
+  y += hh;
+
+  // Data rows
+  const allRows = [...doc.rows, doc.totalRow];
+  allRows.forEach((r, ri) => {
+    const isTot = ri === allRows.length - 1;
+    const rh = isTot ? 42 : 48;
+    box(bxX, y, bxW, rh, isTot ? '#f3f4f6' : '#fff');
+    let rx = bxX;
+    r.forEach((val, ci) => {
+      if(ci>0){ cx.strokeStyle='#333'; cx.lineWidth=1; cx.beginPath(); cx.moveTo(rx,y); cx.lineTo(rx,y+rh); cx.stroke(); }
+      const al = ci===0 ? 'center' : (ci>=3 || (nc<=4 && ci===nc-1)) ? 'right' : 'left';
+      const tx = al==='center' ? rx+cw[ci]/2 : al==='right' ? rx+cw[ci]-8 : rx+8;
+      const ls = wrap(val, cw[ci]-14, 15, isTot);
+      ls.slice(0,2).forEach((ln,li)=> txt(ln, tx, y + (ls.length>1?5:13) + li*18, 15, isTot, al));
+      rx += cw[ci];
+    });
+    y += rh;
+  });
+
+  y += 22;
+
+  // Bottom 2 Columns: Left (Words + Bank) | Right (Summary)
+  const leftW = bxW * 0.55, rightW = bxW - leftW - 18, rightX = bxX + leftW + 18;
+  // Left Box 1: Amount in Words
+  const wLines = wrap(amountInWords(doc.grandTotal), leftW - 24, 16, 1);
+  const wbH = 44 + wLines.length * 22;
+  box(bxX, y, leftW, wbH);
+  txt('Invoice Amount In Words:', bxX+12, y+10, 15, 1, 'left', '#1B4332');
+  wLines.forEach((ln,i)=> txt(ln, bxX+12, y+34+i*22, 16, 1));
+
+  // Left Box 2: Bank Details
+  const bkY = y + wbH + 14;
+  box(bxX, bkY, leftW, 134);
+  txt('Bank Details (Demo):', bxX+12, bkY+10, 15, 1, 'left', '#1B4332');
+  txt('Bank: ' + C.bankName, bxX+12, bkY+36, 15, 0);
+  txt(`A/c No: ${C.accNo}   |   IFSC: ${C.ifsc}`, bxX+12, bkY+60, 15, 0);
+  txt('Holder: ' + C.accHolder, bxX+12, bkY+84, 15, 0);
+  txt('UPI ID: ' + C.upiId, bxX+12, bkY+108, 15, 1, 'left', '#1B4332');
+
+  // Right: Summary Table
+  let sy = y;
+  doc.summary.forEach(([l,v,hi]) => {
+    const sh = hi ? 42 : 36;
+    box(rightX, sy, rightW, sh, hi ? '#ecfdf5' : '#fff');
+    txt(l, rightX+10, sy+10, hi?16:15, hi?1:0);
+    txt(v, rightX+rightW-10, sy+10, hi?17:15, 1, 'right');
+    sy += sh;
+  });
+
+  const sigY = Math.max(bkY + 150, sy + 20, H - 235);
+  box(bxX, sigY, bxW, 126);
+  txt('Terms & Conditions:', bxX+14, sigY+14, 15, 1);
+  txt('1. Weight & deduction checked and agreed at dispatch.', bxX+14, sigY+38, 14, 0, 'left', '#444');
+  txt('2. RESTRICTED DEMO SAMPLE — Not valid for official tax/billing use.', bxX+14, sigY+60, 14, 1, 'left', '#b91c1c');
+
+  txt('For ' + C.name, bxX+bxW-16, sigY+16, 17, 1, 'right');
+  cx.strokeStyle='#333'; cx.lineWidth=1; cx.beginPath(); cx.moveTo(bxX+bxW-210, sigY+94); cx.lineTo(bxX+bxW-16, sigY+94); cx.stroke();
+  txt('Authorized Signatory', bxX+bxW-16, sigY+100, 15, 0, 'right');
+
+  txt(`Software Demo by ${DEMO_CFG.devName} · ${DEMO_CFG.devTitle} · Ph: ${DEMO_CFG.devPhoneShow}`, W/2, H - M_ - 26, 14, 0, 'center', '#555');
+  return cv;
+}
+
+const cvBlob = (cv,type,q) => new Promise((ok,no)=>cv.toBlob(b=>b?ok(b):no(new Error('Encode failed')),type,q));
+function pdfFromJpegA4(jb, pw, ph){
+  const Wp = 595.28, Hp = 841.89; // True A4 in PDF points
+  const enc = s => new TextEncoder().encode(s), parts = [], off = []; let len = 0;
+  const push = b => { parts.push(b); len += b.length; };
+  const obj = (n,head,stream) => { off[n]=len; push(enc(n+' 0 obj\n'+head+'\n')); if(stream){push(enc('stream\n'));push(stream);push(enc('\nendstream\n'));} push(enc('endobj\n')); };
+  push(enc('%PDF-1.4\n'));
+  obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+  obj(3,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${Wp} ${Hp}] /Resources << /XObject << /Im0 4 0 R >> /ProcSet [/PDF /ImageC] >> /Contents 5 0 R >>`);
+  obj(4,`<< /Type /XObject /Subtype /Image /Width ${pw} /Height ${ph} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jb.length} >>`, jb);
+  const cs = `q ${Wp} 0 0 ${Hp} 0 0 cm /Im0 Do Q`;
+  obj(5,`<< /Length ${cs.length} >>`, enc(cs));
+  const xo = len; let x = 'xref\n0 6\n0000000000 65535 f \n';
+  for(let i=1;i<=5;i++) x += String(off[i]).padStart(10,'0')+' 00000 n \n';
+  x += `trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xo}\n%%EOF\n`;
+  push(enc(x));
+  return new Blob(parts, {type:'application/pdf'});
+}
+
+function dlBlob(b, name){
+  const u = URL.createObjectURL(b), a = document.createElement('a');
+  a.href = u; a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ a.remove(); URL.revokeObjectURL(u); }, 3000);
+}
+
+async function shareFile(b, name, title){
+  let f = null;
+  try{ f = new File([b], name, {type:b.type}); }catch(e){}
+  if(f && navigator.share && navigator.canShare && navigator.canShare({files:[f]})){
+    try{ await navigator.share({files:[f], title}); return '✅ பகிரப்பட்டது'; }
+    catch(e){ if(e && e.name==='AbortError') return ''; }
+  }
+  dlBlob(b, name);
+  return '⬇️ Share ஆதரவு இல்லை — கோப்பு Download செய்யப்பட்டது';
+}
+
+function showBillDoc(doc, ph){
+  document.querySelectorAll('#bm').forEach(x=>x.remove());
+  const m = document.createElement('div');
+  m.id = 'bm'; m.dataset.mode = 'a4';
+  m.style.cssText = 'position:fixed;inset:0;background:#000a;z-index:25;padding:10px;display:flex;align-items:center;justify-content:center';
+  m.innerHTML = `<div class="card" style="max-width:880px;width:100%;max-height:94vh;overflow:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+      <h3 style="margin:0">📄 பில் முன்னோட்டம் (A4 & Thermal Preview)</h3>
+      <button class="btn s x" onclick="document.getElementById('bm').remove()">✖️ மூடு</button>
+    </div>
+    <div class="bmtool" style="margin-top:8px">
+      <button class="btn s o" data-m="a4">📄 A4 Invoice (Default)</button>
+      <button class="btn s x" data-m="t58">🧾 58mm Thermal</button>
+      <button class="btn s x" data-m="t80">🧾 80mm Thermal</button>
+    </div>
+    <div class="a4wrap" id="bmA4Wrap">${renderA4HTML(doc)}</div>
+    <div id="bmReceipt" class="w58 hid">${renderThermalHTML(doc)}</div>
+    <div id="bmMsg" class="k" style="min-height:18px;margin-top:4px"></div>
+    <div class="bmact">
+      <button class="btn o" id="bmw">📲 WhatsApp Text</button>
+      <button class="btn" id="bmsp">📄 Share A4 PDF</button>
+      <button class="btn" id="bmsi">🖼️ Share A4 Image (PNG)</button>
+      <button class="btn x" id="bmdp">⬇️ Download A4 PDF</button>
+      <button class="btn x" id="bmdi">⬇️ Download A4 PNG</button>
+      <button class="btn" onclick="window.print()">🖨️ Print</button>
+    </div>
+  </div>`;
+  document.body.appendChild(m);
+
+  let cache = null;
+  const msg = s => { if($('bmMsg')) $('bmMsg').textContent = s||''; };
+  const prepA4 = async () => {
+    if(cache) return cache;
+    const cv = await renderA4Canvas(doc);
+    const png = await cvBlob(cv, 'image/png');
+    const jb = await cvBlob(cv, 'image/jpeg', 0.94);
+    const pdf = pdfFromJpegA4(new Uint8Array(await jb.arrayBuffer()), cv.width, cv.height);
+    return (cache = {png, pdf});
+  };
+  const fname = ext => `DEMO_A4_Bill_${String(doc.invNo).replace(/\W+/g,'_')}_${doc.date}.${ext}`;
+
+  m.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+    const mode = b.dataset.m;
+    m.dataset.mode = mode;
+    m.querySelectorAll('[data-m]').forEach(x=>x.className='btn s '+(x.dataset.m===mode?'o':'x'));
+    $('bmA4Wrap').classList.toggle('hid', mode!=='a4');
+    $('bmReceipt').classList.toggle('hid', mode==='a4');
+    if(mode==='t58') $('bmReceipt').className='w58';
+    if(mode==='t80') $('bmReceipt').className='w80';
+  });
+
+  $('bmw').onclick = () => {
+    let d = (ph||'').replace(/\D/g,'').replace(/^0+/,'');
+    if(d.length===10) d = '91'+d;
+    window.open('https://wa.me/' + d + '?text=' + encodeURIComponent(fmtWADoc(doc)), '_blank');
+  };
+  $('bmsp').onclick = async () => { msg('⏳ A4 PDF தயாராகிறது...'); const r=await prepA4(); msg(await shareFile(r.pdf, fname('pdf'), 'Demo A4 Invoice')); };
+  $('bmsi').onclick = async () => { msg('⏳ A4 Image தயாராகிறது...'); const r=await prepA4(); msg(await shareFile(r.png, fname('png'), 'Demo A4 Invoice')); };
+  $('bmdp').onclick = async () => { msg('⏳ A4 PDF பதிவிறக்கம்...'); const r=await prepA4(); dlBlob(r.pdf, fname('pdf')); msg('⬇️ A4 PDF Download செய்யப்பட்டது'); };
+  $('bmdi').onclick = async () => { msg('⏳ A4 PNG பதிவிறக்கம்...'); const r=await prepA4(); dlBlob(r.png, fname('png')); msg('⬇️ A4 PNG Download செய்யப்பட்டது'); };
+}
+
+/* ---- Bilingual UI Translation ---- */
+const EN = `மாதிரி A4 பில்=Sample A4 Bill;மாதிரி A4 விற்பனை பில் பார்=View Sample A4 Bill;புதிய A4 விற்பனை பில் போடு=New A4 Sales Bill;எடை கொள்முதல் சோதனை=Try Weight Purchase;உரிக்காத காய் இருப்பு=Unhusked Stock;உரித்த காய் இருப்பு=Husked Stock;தேங்காய் மட்டை இருப்பு=Husk Stock;தோராய நிகர எடை இருப்பு=Approx Net Weight Stock;தற்போதைய கல்லா இருப்பு=Current Cash in Hand;விவசாயி / சப்ளையர் பாக்கி=Supplier Payable;கொடுத்த முன்பணம்=Advance Given;வியாபாரிகளிடம் வர வேண்டியது=Buyer Receivable;நபர்கள்=parties;எண்ணிக்கை கொள்முதல்=Count Purchase;எடை கொள்முதல்=Weight Purchase;சப்ளையர் / மண்டி=Supplier / Mandi;காட்டா எடை=Gross Weight;கழிவு எடை=Deduction Weight;நிகர எடை=Net Weight;1 கிலோ விலை ₹=Rate per Kg ₹;மொத்தத் தொகை ₹=Total Amount ₹;பில் நிகரத் தொகை ₹=Net Bill Amount ₹;இப்போது கொடுக்கும் தொகை ₹=Paid Now ₹;புதிய கணக்கு இருப்பு=New Closing Balance;தேங்காய் விற்பனை=Coconut Sales;மட்டை விற்பனை=Husk Sales;வியாபாரி=Buyer;விவசாயிகள் / சப்ளையர்கள்=Farmers / Suppliers;வியாபாரிகள்=Buyers;பில் மொத்தம்=Bill Total;இப்போது வாங்கிய தொகை ₹=Received Now ₹;புதிய பாக்கி=New Balance;விற்பனை சேமி=Save Sale;சேமித்து A4 பில் / Share=Save & A4 Bill / Share;தினசரி உரியல்=Daily Dehusking;குடோன் சேதாரம்=Godown Wastage;இருப்பு நேர் செய்தல்=Stock Reconciliation;சப்ளையர் பட்டுவாடா=Supplier Payment;வியாபாரி வசூல்=Buyer Collection;கூலி=Labor;இதர செலவுகள்=Other Expenses;ரகம் வாரியாக=By Grade;சப்ளையர் பாக்கி=Payables;வியாபாரி பாக்கி=Receivables;கணக்கு இருப்பு=Account Balance;ரத்து=Cancel;மூடு=Close;சேமி=Save;தேதி=Date;குறிப்பு=Notes`.split(';').map(x=>x.split('=')).filter(x=>x.length==2).sort((a,b)=>b[0].length-a[0].length);
+
+function trAll(){
+  if(lang!=='en') return;
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let node;
+  while(node = w.nextNode()){
+    const p = node.parentNode;
+    if(!p || (p.closest && (p.closest('#bmA4') || p.closest('#bmReceipt'))) || p.tagName==='STYLE' || p.tagName==='SCRIPT' || p.tagName==='TEXTAREA') continue;
+    let v = node.nodeValue, o = v;
+    for(const [a,b] of EN) if(v.includes(a)) v = v.split(a).join(b);
+    if(v !== o) node.nodeValue = v;
+  }
+}
+function setLang(){
+  lang = lang==='ta' ? 'en' : 'ta';
+  try{ localStorage.setItem(K_LANG, lang); }catch(e){}
+  render();
+}
+
+function syncBarHeight(){
+  const db = $('demoBar');
+  if(db) document.documentElement.style.setProperty('--dbh', db.offsetHeight+'px');
+}
+addEventListener('resize', syncBarHeight);
+
+/* ---- Boot ---- */
+recAll();
+syncBarHeight();
+if(isExpired()) showExpiryLock();
+else render();
+</script>
+</body>
+</html>
